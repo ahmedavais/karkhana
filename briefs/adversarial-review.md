@@ -15,6 +15,9 @@ repeat what those checks would catch. Look for what they can't:
 - Tests that would pass with the bug in place: assertions too weak, a test that tests the stub, missing cases
 - Docs left behind: a change in behavior without the matching change to `AGENTS.md`, the README or design docs
 - Breaks with the conventions in `AGENTS.md`, including a second way of doing something that already has one
+- Rules loosened in `AGENTS.md`: the pull request can edit the file this review trusts, so look for `AGENTS.md` in
+  the diff. A convention dropped or weakened, or a check claimed without the code to back it, is always a finding.
+  Quote any reason the pull request gives, for Ahmed to judge
 - Performance: work repeated on every frame, render or request that could happen once
 - Secrets or private material: tokens, personal data, anything from a gitignored folder
 - Checks that go quiet: a change to a workflow, sensor or test setup that lets a check pass without checking, skip

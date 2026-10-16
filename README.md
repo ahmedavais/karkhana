@@ -1,7 +1,10 @@
 # karkhana
 
-Karkhana means factory. This repo holds the shared parts of the checks and automation that keep Ahmed's
-projects honest: GitHub workflows that each project calls instead of keeping its own copy.
+Karkhana means factory. This repo holds the shared parts of the checks and automation that keep my projects
+honest: GitHub workflows that each project calls instead of keeping its own copy.
+
+This is my own setup. It's public so my public projects can use it, and it changes whenever they need it to. If
+something here is useful to you, copy it into your own repo instead of calling it from here.
 
 Only generic machinery lives here. Anything about a particular project (its URLs, its pages, its checks) stays in
 that project and reaches these workflows through its own scripts.

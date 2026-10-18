@@ -24,3 +24,11 @@ test('code nested deeper than 4 blocks is an error', () => {
 
   assert.deepEqual(findings, [{ ruleId: 'max-depth', severity: 'error' }]);
 });
+
+test('a function with complexity over 10 is an error', () => {
+  const tenBranches = Array.from({ length: 10 }, (_, n) => `if (x === ${n}) return ${n};`).join('\n');
+
+  const findings = findingsFor(`function f(x) {\n${tenBranches}\nreturn -1;\n}`);
+
+  assert.deepEqual(findings, [{ ruleId: 'complexity', severity: 'error' }]);
+});

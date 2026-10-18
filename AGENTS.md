@@ -5,9 +5,8 @@ Shared GitHub workflows for Ahmed's projects. See `README.md` for what each one 
 - Public repo: generic machinery only. Never add a project's URLs, content, secrets or anything from a private repo
 - Projects call workflows at `@main`, so a broken change breaks every project's runs at once. Keep changes small
 - main only takes pull requests with actionlint and the package tests passing (ruleset). `.github/workflows/review.yml`
-  has karkhana's
-  own pull requests reviewed with the shared adversarial review, which asks whether a change lets any project's
-  checks pass while checking less
+  has karkhana's own pull requests reviewed with the shared adversarial review, which asks whether a change lets any
+  project's checks pass while checking less
 - `briefs/adversarial-review.md` is the review brief for every project. Keep it generic: a project's own
   conventions belong in its `AGENTS.md`
 - karkhana is also a private npm package that projects install from GitHub. `eslint/structural-limits.js` holds the

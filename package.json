@@ -1,0 +1,14 @@
+{
+  "name": "karkhana",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./eslint-limits": "./eslint/structural-limits.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "eslint": "^10.12.0"
+  }
+}

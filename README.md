@@ -70,7 +70,9 @@ jobs:
 ## Duplication
 
 Fails when a change adds duplicated code: a pull request is compared with its base branch, a push with the commit
-before it. Duplication already there doesn't fail anything; only new clones do. It runs
+before it. Duplication already there doesn't fail anything; only new clones do. With nothing to compare against,
+such as a force push that dropped the commit before it, it fails with jscpd's "git ref not found" rather than
+passing unchecked. It runs
 [jscpd](https://github.com/kucherenko/jscpd), which reads every language these projects use and respects
 `.gitignore`. Tests count too.
 

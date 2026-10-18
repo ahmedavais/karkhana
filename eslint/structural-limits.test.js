@@ -14,3 +14,13 @@ test('a function with more than 3 parameters is an error', () => {
 
   assert.deepEqual(findings, [{ ruleId: 'max-params', severity: 'error' }]);
 });
+
+test('code nested deeper than 4 blocks is an error', () => {
+  const findings = findingsFor(`
+    function f(x) {
+      if (x) { if (x) { if (x) { if (x) { if (x) { return x; } } } } }
+    }
+  `);
+
+  assert.deepEqual(findings, [{ ruleId: 'max-depth', severity: 'error' }]);
+});

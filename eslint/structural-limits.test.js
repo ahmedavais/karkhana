@@ -40,3 +40,14 @@ test('a function over 30 lines is a warning, not an error', () => {
 
   assert.deepEqual(findings, [{ ruleId: 'max-lines-per-function', severity: 'warning' }]);
 });
+
+test('code exactly at every limit lints clean', () => {
+  const findings = findingsFor(`
+    function f(a, b, c) {
+      if (a) { if (b) { if (c) { if (a) { return a + b + c; } } } }
+      return 0;
+    }
+  `);
+
+  assert.deepEqual(findings, []);
+});

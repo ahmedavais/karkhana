@@ -67,6 +67,29 @@ jobs:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 ```
 
+## Duplication
+
+Fails when a change adds duplicated code: a pull request is compared with its base branch, a push with the commit
+before it. Duplication already there doesn't fail anything; only new clones do. It runs
+[jscpd](https://github.com/kucherenko/jscpd), which reads every language these projects use and respects
+`.gitignore`. Tests count too.
+
+The project provides a `.jscpd.json` that skips lock files and anything generated:
+
+```json
+{
+  "ignore": ["**/package-lock.json", "worker-configuration.d.ts"]
+}
+```
+
+It's called as a job in the project's own CI:
+
+```yaml
+jobs:
+  duplication:
+    uses: ahmedavais/karkhana/.github/workflows/duplication.yml@main
+```
+
 ## Following main
 
 Projects call these workflows at `@main`, so a change here reaches every project at once. Every change is checked

@@ -32,3 +32,11 @@ test('a function with complexity over 10 is an error', () => {
 
   assert.deepEqual(findings, [{ ruleId: 'complexity', severity: 'error' }]);
 });
+
+test('a function over 30 lines is a warning, not an error', () => {
+  const thirtyLines = Array.from({ length: 30 }, () => 'x += 1;').join('\n');
+
+  const findings = findingsFor(`function f(x) {\n${thirtyLines}\nreturn x;\n}`);
+
+  assert.deepEqual(findings, [{ ruleId: 'max-lines-per-function', severity: 'warning' }]);
+});

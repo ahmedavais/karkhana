@@ -93,6 +93,30 @@ jobs:
     uses: ahmedavais/karkhana/.github/workflows/duplication.yml@main
 ```
 
+## ESLint limits
+
+Structural limits every TypeScript project shares: more than 3 parameters, nesting deeper than 4 blocks and
+complexity over 10 are errors; a function over 30 lines is a warning, so a project with long functions stays green
+while Habit Hooks coaches them as they get touched. `eslint/structural-limits.test.js` lints a snippet against each.
+
+A project installs karkhana straight from GitHub and spreads the limits into its `eslint.config.js`:
+
+```sh
+npm install --save-dev github:ahmedavais/karkhana
+```
+
+```js
+import { structuralLimits } from 'karkhana/eslint-limits';
+
+export default tseslint.config(
+  // the project's own configs
+  structuralLimits,
+);
+```
+
+Unlike the workflows, this doesn't follow `@main`. The project's `package-lock.json` pins the karkhana commit it
+installed, and a change here reaches the project when it runs `npm update karkhana` and commits the lock file.
+
 ## Following main
 
 Projects call these workflows at `@main`, so a change here reaches every project at once. Every change is checked

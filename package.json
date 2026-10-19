@@ -2,6 +2,9 @@
   "name": "karkhana",
   "private": true,
   "type": "module",
+  "files": [
+    "eslint/structural-limits.js"
+  ],
   "exports": {
     "./eslint-limits": "./eslint/structural-limits.js"
   },

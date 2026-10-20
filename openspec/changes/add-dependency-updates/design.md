@@ -41,7 +41,7 @@ Recorded here so the next bot or regex manager follows these.
 **Non-Goals:**
 
 - GitHub's Dependabot alerts and Renovate's GitHub-alert path (decided during design)
-- dev-scripts, and pelican-api, which is being retired
+- Projects that don't opt in
 - Branch protection or rulesets on the projects
 - Self-merging majors
 
@@ -67,19 +67,24 @@ request at all rather than a waiting one.
 **Grouping.** One `packageRules` entry groups `minor` and `patch` updates as `weekly updates` with
 `commitMessagePrefix: "ci:"`. `lockFileMaintenance` is enabled on the same schedule, automerges, and uses `ci:`.
 
-**Security fixes.** `osvVulnerabilityAlerts: true`, and `vulnerabilityAlerts` sets `minimumReleaseAge: null`,
-`automerge: true` and `commitMessagePrefix: "fix:"`. Renovate already lets these skip the schedule.
+**Security fixes.** `osvVulnerabilityAlerts: true`, and `vulnerabilityAlerts` sets `minimumReleaseAge: null` and
+`commitMessagePrefix: "fix:"`. It deliberately doesn't set `automerge`: Renovate applies `vulnerabilityAlerts` after
+`packageRules`, so `automerge: true` there would let a fix that needs a major merge itself (found by the adversarial
+review). Fixes inherit the top-level `automerge` and the major rule. Renovate already lets them skip the schedule.
 
 **Pinned tools in workflow commands.** Two `customManagers` of type `regex`, matching `.github/workflows/*.yml`: one for
 `npx --yes <name>@<version>` (npm datasource), one for `<owner>/<image>:<version>` in a `docker run` (docker datasource).
-They fall under the same 14-day rule and the weekly group.
+They fall under the same 14-day rule but form their own group, `workflow tools`, with `automerge: false`: karkhana's
+checks don't run these tools, and every project runs the workflows at `@main`, so a bump comes to Ahmed. Found by the
+adversarial review.
 
 **The karkhana pin in projects.** Each project's `package.json` names `github:ahmedavais/karkhana` with no ref, so the
 lock file pins whatever commit was current. The weekly lock file refresh reinstalls it, which moves the pin to karkhana's
 latest main. No separate rule. The 14-day rule doesn't apply, which is fine for karkhana's own code.
 
-**Rollout.** agile-7.com first, proven with a planted failing update; then the remaining projects and karkhana, one
-`renovate.json` each.
+**Rollout.** A project opts in only once CI runs on its pull requests, because Renovate merges when no check fails.
+The app gets the throwaway repo and karkhana first (karkhana's ruleset requires its checks); agile-7.com only after
+the no-checks behavior is proven; then the other projects that call karkhana, one `renovate.json` each.
 
 ## Risks / Trade-offs
 

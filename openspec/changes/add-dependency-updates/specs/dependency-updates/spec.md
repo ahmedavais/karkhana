@@ -91,13 +91,14 @@ SHALL list pending updates.
 - **WHEN** updates are waiting
 - **THEN** no issue lists them
 
-### Requirement: Tools pinned in workflow commands stay current
-A tool version written inside a karkhana workflow command SHALL be updated under the same policy as a declared
-dependency.
+### Requirement: Tools pinned in workflow commands are proposed, not merged
+A tool version written inside a karkhana workflow command SHALL be proposed under the same 14-day rule as a declared
+dependency, in a pull request of its own that SHALL NOT merge itself and SHALL be assigned to Ahmed, because every
+project runs karkhana's workflows at `@main`.
 
 #### Scenario: A newer duplication checker
 - **WHEN** the duplication checker pinned in karkhana's shared workflow has a release at least 14 days old
-- **THEN** karkhana's weekly group updates the pinned version
+- **THEN** a pull request proposes the new version, assigned to Ahmed, and does not merge itself
 
 ### Requirement: Update commits follow the semantic prefixes
 Commits made by updates SHALL start with `ci:` for routine updates and `fix:` for security fixes.

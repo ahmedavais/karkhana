@@ -8,8 +8,7 @@ Decided with Ahmed on 2026-10-19 in a one-question-at-a-time grilling session, b
 - An update Renovate won't merge (failed checks, majors) is assigned to Ahmed, so GitHub emails him. No Dependency
   Dashboard issue. Proven with a planted failing update
 - Ordinary releases wait 14 days; security fixes skip the wait, found through OSV
-- Proving ground: agile-7.com; then the other projects that call karkhana, and karkhana itself (the full list lives in
-  Ahmed's private factory map)
+- Proving ground: agile-7.com; then the other projects that call karkhana, and karkhana itself
 - Non-major updates come as one grouped pull request per project each Monday; security fixes come as their own
   immediate pull requests
 - Merge through pull requests, so CI and the adversarial review see every update

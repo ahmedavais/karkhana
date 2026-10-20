@@ -129,10 +129,11 @@ update:
 - A major release, or an update whose checks fail, stays open and is assigned to Ahmed, so GitHub emails him. Nothing
   else asks for attention, and no issue lists pending updates
 - Tool versions pinned inside workflow commands (`npx --yes <tool>@<version>`, `docker run <image>:<version>`) are
-  updated like any other dependency
+  proposed in a pull request of their own that never merges itself: every project runs these workflows at `@main`
 - Commits start with `ci:`, or `fix:` for a security fix
 
-A project opts in with a `renovate.json` and the Mend Renovate GitHub App installed on its repo:
+A project opts in only once CI runs on its pull requests, because Renovate merges when no check is failing. It adds a
+`renovate.json` and gets the Mend Renovate GitHub App installed on its repo:
 
 ```json
 {

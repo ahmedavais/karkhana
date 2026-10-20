@@ -1,8 +1,7 @@
 ## Why
 
-Dependencies in the projects that use karkhana fall behind silently. On 2026-10-18, `npm audit` showed 6 high-severity
-vulnerabilities in one project and 4 in another, all with non-major fixes, and nothing raised them except a manual
-install that happened to print them. The factory's rule is that a failed run is the alarm; for dependencies there is no
+Dependencies in the projects that use karkhana fall behind silently. High-severity vulnerabilities with non-major fixes
+sat in their lock files, and nothing raised them except a manual install that happened to print them. The factory's rule is that a failed run is the alarm; for dependencies there is no
 run at all.
 
 ## What Changes
@@ -15,7 +14,8 @@ run at all.
 - Ordinary releases are taken only once they are 14 days old; security fixes skip the wait
 - Lock files are refreshed every Monday in a pull request of their own, so fixes in transitive dependencies arrive
   within a week
-- The tool versions pinned inside karkhana's workflow commands (jscpd, actionlint) are kept current like any dependency
+- The tool versions pinned inside karkhana's workflow commands (jscpd, actionlint) are proposed like any dependency,
+  but never merge themselves: every project runs these workflows at `@main`
 - Each project opts in with a one-line `renovate.json` that extends the preset; agile-7.com goes first as the proving
   ground
 
@@ -32,7 +32,8 @@ None.
 
 ## Impact
 
-- karkhana: a new `renovate.json` preset at the repo root, and a README section on how a project opts in
+- karkhana: the preset as `default.json` at the repo root, its own one-line `renovate.json`, and a README section on
+  how a project opts in
 - Each opted-in project: a `renovate.json`, and a steady stream of Renovate pull requests and commits
 - Ahmed: installs the Mend Renovate GitHub App on the opted-in repos, the one step only he can take
 - CI minutes: one extra run per project per week, plus one per security fix

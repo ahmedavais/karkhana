@@ -12,6 +12,8 @@ Shared GitHub workflows for Ahmed's projects. See `README.md` for what each one 
 - karkhana is also a private npm package that projects install from GitHub. `eslint/structural-limits.js` holds the
   shared ESLint limits, and its tests lint snippets exactly at and one past each limit, so changing a limit means
   changing a test. Projects pin a commit in their lock file and take changes with `npm update karkhana`, not at `@main`
+- `default.json` is the Renovate preset every project follows from main, like the workflows. `validate-renovate` checks
+  it; a broken preset would stop updates in every project at once
 - `.github/workflows/ci.yml` lints every workflow with actionlint and runs `npm test`. Prove a new check by planting a
   failure first
 - actionlint checks an action's inputs only for versions in its catalog. Its 1.7.12 catalog has no `@v7` actions,

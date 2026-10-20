@@ -117,8 +117,35 @@ export default tseslint.config(
 Unlike the workflows, this doesn't follow `@main`. The project's `package-lock.json` pins the karkhana commit it
 installed, and a change here reaches the project when it runs `npm update karkhana` and commits the lock file.
 
+## Dependency updates
+
+`default.json` is the Renovate preset every project follows, so dependencies stay current without anyone running an
+update:
+
+- Patch and minor updates arrive as one pull request on Monday mornings, and a lock file refresh as a second. Each
+  merges itself once every check on it passes
+- A release is taken only once it is 14 days old. A fix for a known vulnerability in a direct dependency skips the
+  wait and the schedule, in a pull request of its own; transitive fixes arrive with Monday's lock file refresh
+- A major release, or an update whose checks fail, stays open and is assigned to Ahmed, so GitHub emails him. Nothing
+  else asks for attention, and no issue lists pending updates
+- Tool versions pinned inside workflow commands (`npx --yes <tool>@<version>`, `docker run <image>:<version>`) are
+  updated like any other dependency
+- Commits start with `ci:`, or `fix:` for a security fix
+
+A project opts in with a `renovate.json` and the Mend Renovate GitHub App installed on its repo:
+
+```json
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>ahmedavais/karkhana"]
+}
+```
+
+Renovate reads the preset from karkhana's main, so a policy change reaches every project at once. The
+`validate-renovate` job checks the preset on every pull request.
+
 ## Following main
 
 Projects call these workflows at `@main`, so a change here reaches every project at once. Every change is checked
-here first: main only takes pull requests, `actionlint` must pass on each one, and the adversarial review asks
-whether the change lets any project's checks pass while checking less.
+here first: main only takes pull requests, `lint-workflows`, `test` and `validate-renovate` must pass on each one,
+and the adversarial review asks whether the change lets any project's checks pass while checking less.

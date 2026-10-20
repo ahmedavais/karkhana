@@ -1,0 +1,93 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "Dependency update policy shared by every project that opts into karkhana"
+  ],
+  "timezone": "America/New_York",
+  "schedule": [
+    "before 9am on monday"
+  ],
+  "minimumReleaseAge": "14 days",
+  "internalChecksFilter": "strict",
+  "dependencyDashboard": false,
+  "assignees": [
+    "ahmedavais"
+  ],
+  "automerge": true,
+  "automergeType": "pr",
+  "platformAutomerge": false,
+  "semanticCommits": "disabled",
+  "commitMessagePrefix": "ci:",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "before 9am on monday"
+    ],
+    "automerge": true
+  },
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": null,
+    "commitMessagePrefix": "fix:"
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "weekly updates"
+    },
+    {
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false
+    },
+    {
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "groupName": "workflow tools",
+      "automerge": false
+    },
+    {
+      "matchRepositories": [
+        "ahmedavais/karkhana"
+      ],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "workflow tools",
+      "automerge": false
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": [
+        "Tools run with npx in workflow commands"
+      ],
+      "managerFilePatterns": [
+        "/^\\.github/workflows/[^/]+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "npx --yes (?:--package )?(?<depName>@?[a-z0-9][a-z0-9._/-]*)@(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "npm"
+    },
+    {
+      "customType": "regex",
+      "description": [
+        "Container images run with docker in workflow commands"
+      ],
+      "managerFilePatterns": [
+        "/^\\.github/workflows/[^/]+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "docker run [^\\n]*?(?<depName>[a-z0-9][a-z0-9._-]*/[a-z0-9._-]+):(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ]
+}

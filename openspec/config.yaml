@@ -1,0 +1,10 @@
+schema: story-driven
+
+rules:
+  proposal:
+    - If there are other context documents created during proposal or referenced by the user as part of the session, list them under **Related context documents** to ensure they are loaded for future steps.
+
+operations:
+  apply:
+    guidance:
+      - Use the Skill tool to invoke the `implement` skill

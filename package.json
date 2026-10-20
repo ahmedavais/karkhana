@@ -12,6 +12,7 @@
     "test": "node --test"
   },
   "devDependencies": {
+    "@fission-ai/openspec": "^1.14.1",
     "eslint": "^10.12.0"
   }
 }

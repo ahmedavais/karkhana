@@ -50,6 +50,16 @@
       ],
       "groupName": "workflow tools",
       "automerge": false
+    },
+    {
+      "matchRepositories": [
+        "ahmedavais/karkhana"
+      ],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "workflow tools",
+      "automerge": false
     }
   ],
   "customManagers": [

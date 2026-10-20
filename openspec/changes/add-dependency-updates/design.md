@@ -76,7 +76,8 @@ review). Fixes inherit the top-level `automerge` and the major rule. Renovate al
 `npx --yes <name>@<version>` (npm datasource), one for `<owner>/<image>:<version>` in a `docker run` (docker datasource).
 They fall under the same 14-day rule but form their own group, `workflow tools`, with `automerge: false`: karkhana's
 checks don't run these tools, and every project runs the workflows at `@main`, so a bump comes to Ahmed. Found by the
-adversarial review.
+adversarial review. The same holds for GitHub Actions updates in karkhana's own workflows, so a rule scoped to
+karkhana puts them in `workflow tools` too; in a project, its own CI runs its actions, so they merge like the rest.
 
 **The karkhana pin in projects.** Each project's `package.json` names `github:ahmedavais/karkhana` with no ref, so the
 lock file pins whatever commit was current. The weekly lock file refresh reinstalls it, which moves the pin to karkhana's

@@ -81,7 +81,7 @@ test('a describe block over 100 lines asks whether the module under test does mo
   const findings = new Linter().verify(describeBlockOf(101), structuralLimits, 'module.test.js');
 
   assert.equal(findings.length, 1);
-  assert.equal(findings[0].ruleId, 'karkhana/max-lines-per-function');
+  assert.equal(findings[0].ruleId, 'karkhana/max-lines-per-describe');
   assert.equal(findings[0].severity, 1);
   assert.match(findings[0].message, /describe has too many lines \(101\)\. Maximum allowed is 100: does the module under test do more than one thing\?/);
 });

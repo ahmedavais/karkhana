@@ -1,4 +1,4 @@
-import { maxLinesPerFunction } from './max-lines-per-function.js';
+import { maxLinesPerDescribe, maxLinesPerFunction } from './lengths-in-test-files.js';
 
 export const structuralLimits = [
   {
@@ -11,10 +11,18 @@ export const structuralLimits = [
   },
   {
     files: ['**/*.test.*'],
-    plugins: { karkhana: { rules: { 'max-lines-per-function': maxLinesPerFunction } } },
+    plugins: {
+      karkhana: {
+        rules: {
+          'max-lines-per-function': maxLinesPerFunction,
+          'max-lines-per-describe': maxLinesPerDescribe,
+        },
+      },
+    },
     rules: {
       'max-lines-per-function': 'off',
       'karkhana/max-lines-per-function': 'warn',
+      'karkhana/max-lines-per-describe': 'warn',
     },
   },
 ];

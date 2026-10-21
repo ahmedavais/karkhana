@@ -4,7 +4,7 @@
   "type": "module",
   "files": [
     "eslint/structural-limits.js",
-    "eslint/max-lines-per-function.js"
+    "eslint/lengths-in-test-files.js"
   ],
   "exports": {
     "./eslint-limits": "./eslint/structural-limits.js"

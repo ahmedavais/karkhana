@@ -10,7 +10,8 @@ run at all.
 - Patch and minor updates arrive as one grouped pull request per project each Monday and merge themselves when every
   check passes
 - Security fixes for direct dependencies arrive at once, as their own pull requests, and merge themselves the same way
-- Majors, and any update whose checks fail, stay open and are assigned to Ahmed, so GitHub emails him
+- Majors, and any update whose checks fail, stay open and are assigned to Ahmed, so GitHub notifies him on his phone
+  and by email. A failed update is assigned the moment its CI fails, by a shared karkhana workflow
 - Ordinary releases are taken only once they are 14 days old; security fixes skip the wait
 - Lock files are refreshed every Monday in a pull request of their own, so fixes in transitive dependencies arrive
   within a week

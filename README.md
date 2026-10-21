@@ -154,8 +154,8 @@ update:
   merges itself once every check on it passes
 - A release is taken only once it is 14 days old. A fix for a known vulnerability in a direct dependency skips the
   wait and the schedule, in a pull request of its own; transitive fixes arrive with Monday's lock file refresh
-- A major release, or an update whose checks fail, stays open and is assigned to Ahmed, so GitHub emails him. Nothing
-  else asks for attention, and no issue lists pending updates
+- A major release, or an update whose checks fail, stays open and is assigned to Ahmed, so GitHub notifies him.
+  Nothing else asks for attention, and no issue lists pending updates
 - Tool versions pinned inside workflow commands (`npx --yes <tool>@<version>`, `docker run <image>:<version>`) are
   proposed in a pull request of their own that never merges itself: every project runs these workflows at `@main`
 - Commits start with `ci:`, or `fix:` for a security fix
@@ -169,6 +169,22 @@ A project opts in only once CI runs on its pull requests, because Renovate merge
   "extends": ["github>ahmedavais/karkhana"]
 }
 ```
+
+Renovate assigns a failed update only on its next run, which can be a day away, and GitHub tells nobody when a run
+started by Renovate's bot fails. So the project's CI ends with the failed update alarm, which assigns a Renovate pull
+request to the repository owner once every job before it has finished and one has failed:
+
+```yaml
+jobs:
+  failed-update-alarm:
+    needs: [verify, duplication]
+    if: failure()
+    permissions:
+      pull-requests: write
+    uses: ahmedavais/karkhana/.github/workflows/failed-update-alarm.yml@main
+```
+
+`needs` lists every other job in the workflow.
 
 Renovate reads the preset from karkhana's main, so a policy change reaches every project at once. The
 `validate-renovate` job checks the preset on every pull request.

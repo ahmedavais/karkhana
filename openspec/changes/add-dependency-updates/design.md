@@ -26,9 +26,10 @@ follow at `@main`. No shared structure to extract; the preset is a JSON file, th
 ESLint limits package, which pins per project; the preset deliberately doesn't, to follow the workflows (spec:
 "Projects opt in").
 
-**First-instance audit.** Three firsts: the first third-party GitHub App with write access, the first bot that merges
-into Ahmed's repos, the first custom (regex) Renovate manager, and the first workflow that acts on a pull request rather than checking it. None needs a helper; each is one block of config.
-Recorded here so the next bot or regex manager follows these.
+**First-instance audit.** Four firsts: the first third-party GitHub App with write access, the first bot that merges
+into Ahmed's repos, the first custom (regex) Renovate manager, and the first workflow that acts on a pull request
+rather than checking it. None needs a helper: the first three are a block of config each, the fourth one small shared
+workflow. Recorded here so the next bot, regex manager or acting workflow follows these.
 
 ## Goals / Non-Goals
 
@@ -63,9 +64,10 @@ false`, so no issue lists pending updates.
 **Failure alarm.** Renovate assigns a failed update only during a run, and Mend's free queue decides when runs happen:
 the throwaway repo's failed update waited more than 24 hours for one (measured). GitHub notifies nobody about a failed
 run that Renovate's bot triggered (measured: no email for two failures). So karkhana gets `failed-update-alarm.yml`, a
-reusable workflow each project's CI calls as its last job, with `needs` on every other job and
-`if: failure() && github.event.pull_request.user.login == 'renovate[bot]'`. It assigns the pull request to the
-repository owner with `GITHUB_TOKEN`, so it names no one and needs no secret. An assignment reaches Ahmed's phone
+reusable workflow each project's CI calls as its last job, with `needs` on every other job, `if: failure()` and
+`pull-requests: write`. The shared workflow acts only on pull requests Renovate opened, and assigns them to the
+repository owner with `GITHUB_TOKEN`, so it names no one and needs no secret. It sees only the jobs of the workflow
+that calls it. An assignment reaches Ahmed's phone
 through GitHub Mobile and his email. Renovate's own assignment on its next run stays as a backup. Alternatives
 rejected: `assignAutomerge: true` (an email for every routine pull request), self-hosted Renovate (a token to keep
 alive, and it still waits for a scheduled run), Mend's paid plan (not free, still scheduled), the Dependency Dashboard
@@ -106,8 +108,10 @@ the no-checks behavior is proven; then the other projects that call karkhana, on
   merges. Verified during apply with a plant before any project opts in beyond agile-7.com
 - [The adversarial review runs on every update pull request] → two or three runs per project per week on Ahmed's
   Claude subscription. Accepted: it's the point of merging through pull requests
-- [An expired review token fails every update's checks] → every update is then assigned to Ahmed, which is loud, and
-  the token reminder already exists
+- [An expired review token fails every update's checks] → the review is its own workflow, so the alarm doesn't see it,
+  and every update is assigned to Ahmed only on Renovate's next run. The token reminder already exists
+- [A CI job missing from the alarm's `needs`, or cancelled rather than failed] → no alarm; Renovate's next run assigns
+  it. Accepted for now: the README says `needs` lists every other job
 - [A green update merges only on Renovate's next run] → a finished check doesn't start a run, and Mend's free queue
   has taken more than a day. Accepted: a weekly update waiting a day is harmless, and failures don't wait (Failure
   alarm)

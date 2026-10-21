@@ -114,3 +114,11 @@ test('a describe block run once per case is held to the same 100 lines', () => {
 
   assert.deepEqual(findings, []);
 });
+
+test('a describe block run once per row of a table is held to the same 100 lines', () => {
+  const perRow = describeBlockOf(60).replace('describe(', 'describe.each`a\n${1}`(');
+
+  const findings = findingsInTestFile(perRow);
+
+  assert.deepEqual(findings, []);
+});

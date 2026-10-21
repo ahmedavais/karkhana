@@ -3,13 +3,18 @@
   "private": true,
   "type": "module",
   "files": [
-    "eslint/structural-limits.js"
+    "eslint/structural-limits.js",
+    "eslint/lengths-in-test-files.js",
+    "habit-hooks/oversized-describe.md"
   ],
   "exports": {
     "./eslint-limits": "./eslint/structural-limits.js"
   },
   "scripts": {
     "test": "node --test"
+  },
+  "peerDependencies": {
+    "eslint": "^10.12.0"
   },
   "devDependencies": {
     "@fission-ai/openspec": "^1.14.1",

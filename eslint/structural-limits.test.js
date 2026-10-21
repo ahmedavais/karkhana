@@ -3,10 +3,24 @@ import { test } from 'node:test';
 import { Linter } from 'eslint';
 import { structuralLimits } from './structural-limits.js';
 
-function findingsFor(code) {
+function findingsFor(code, filename = 'module.js') {
   return new Linter()
-    .verify(code, [structuralLimits])
+    .verify(code, structuralLimits, filename)
     .map(({ ruleId, severity }) => ({ ruleId, severity: severity === 2 ? 'error' : 'warning' }));
+}
+
+function findingsInTestFile(code) {
+  return findingsFor(code, 'module.test.js');
+}
+
+function testOf(lineCount) {
+  const steps = Array.from({ length: lineCount - 2 }, () => 'x += 1;').join('\n');
+  return `it('behaves', () => {\n${steps}\n});`;
+}
+
+function describeBlockOf(lineCount) {
+  const tests = Array.from({ length: lineCount - 2 }, (_, n) => `it('behaves ${n}', () => {});`).join('\n');
+  return `describe('module', () => {\n${tests}\n});`;
 }
 
 test('a function with more than 3 parameters is an error', () => {
@@ -53,6 +67,66 @@ function atParameterAndDepthLimits(a, b, c) {
 function atComplexityLimit(x) {\n${nineBranches}\nreturn -1;\n}
 function atLengthLimit(x) {\n${twentySevenLines}\nreturn x;\n}
 `);
+
+  assert.deepEqual(findings, []);
+});
+
+test('a describe block of 100 lines in a test file lints clean', () => {
+  const findings = findingsInTestFile(describeBlockOf(100));
+
+  assert.deepEqual(findings, []);
+});
+
+test('a describe block over 100 lines asks whether the module under test does more than one thing', () => {
+  const findings = new Linter().verify(describeBlockOf(101), structuralLimits, 'module.test.js');
+
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].ruleId, 'karkhana/max-lines-per-describe');
+  assert.equal(findings[0].severity, 1);
+  assert.match(findings[0].message, /describe has too many lines \(101\)\. Maximum allowed is 100: does the module under test do more than one thing\?/);
+});
+
+test('a test of 30 lines in a test file lints clean', () => {
+  const findings = findingsInTestFile(`let x = 0;\n${testOf(30)}`);
+
+  assert.deepEqual(findings, []);
+});
+
+test('a test over 30 lines in a test file is a warning', () => {
+  const findings = findingsInTestFile(`let x = 0;\n${testOf(31)}`);
+
+  assert.deepEqual(findings, [{ ruleId: 'karkhana/max-lines-per-function', severity: 'warning' }]);
+});
+
+test('a skipped or focused describe block is held to the same 100 lines', () => {
+  const skipped = describeBlockOf(60).replace('describe(', 'describe.skip(');
+  const focused = describeBlockOf(60).replace('describe(', 'describe.only(');
+
+  const findings = findingsInTestFile(`${skipped}\n${focused}`);
+
+  assert.deepEqual(findings, []);
+});
+
+test('a describe block run once per case is held to the same 100 lines', () => {
+  const perCase = describeBlockOf(60).replace('describe(', 'describe.each([1, 2])(');
+
+  const findings = findingsInTestFile(perCase);
+
+  assert.deepEqual(findings, []);
+});
+
+test('a describe block run once per row of a table is held to the same 100 lines', () => {
+  const perRow = describeBlockOf(60).replace('describe(', 'describe.each`a\n${1}`(');
+
+  const findings = findingsInTestFile(perRow);
+
+  assert.deepEqual(findings, []);
+});
+
+test('a describe block hung off a test function is held to the same 100 lines', () => {
+  const grouped = describeBlockOf(60).replace('describe(', 'test.describe(');
+
+  const findings = findingsInTestFile(grouped);
 
   assert.deepEqual(findings, []);
 });

@@ -71,3 +71,11 @@ test('a describe block of 100 lines in a test file lints clean', () => {
 
   assert.deepEqual(findings, []);
 });
+
+test('a describe block over 100 lines asks whether the module under test does more than one thing', () => {
+  const [finding] = new Linter().verify(describeBlockOf(101), structuralLimits, 'module.test.js');
+
+  assert.equal(finding.ruleId, 'karkhana/max-lines-per-function');
+  assert.equal(finding.severity, 1);
+  assert.match(finding.message, /describe has too many lines \(101\)\. Maximum allowed is 100: does the module under test do more than one thing\?/);
+});

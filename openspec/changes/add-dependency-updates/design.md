@@ -103,16 +103,18 @@ karkhana puts them in `workflow tools` too; in a project, its own CI runs its ac
 lock file pins whatever commit was current. The weekly lock file refresh reinstalls it, which moves the pin to karkhana's
 latest main. No separate rule. The 14-day rule doesn't apply, which is fine for karkhana's own code.
 
-**Rollout.** A project opts in only once CI runs on its pull requests, because Renovate merges when no check fails.
-The app gets the throwaway repo and karkhana first (karkhana's ruleset requires its checks); agile-7.com only after
-the no-checks behavior is proven; then the other projects that call karkhana, one `renovate.json` each.
+**Rollout.** A project opts in only once CI runs on its pull requests, because with no checks Renovate leaves an update
+open and tells no one. The app gets the throwaway repo and karkhana first (karkhana's ruleset requires its checks);
+agile-7.com only after the no-checks behavior is proven; then the other projects that call karkhana, one `renovate.json`
+each.
 
 ## Risks / Trade-offs
 
 - [Renovate has write access to the repos] → only the five opted-in repos are granted, and every merge goes through a
   pull request with CI
-- [No checks at all on a pull request, for example a workflow that didn't trigger] → unknown whether Renovate then
-  merges. Verified during apply with a plant before any project opts in beyond agile-7.com
+- [No checks at all on a pull request, for example a workflow that didn't trigger] → Renovate doesn't merge it
+  (measured), but it doesn't assign it either, so the update waits without telling anyone. A project opts in only
+  once CI runs on its pull requests
 - [A CI job missing from the alarm's `needs`, or cancelled rather than failed] → no alarm; Renovate's next run assigns
   it. Accepted for now: the README says `needs` lists every other job
 - [A green update merges only on Renovate's next run] → a finished check doesn't start a run, and Mend's free queue

@@ -142,7 +142,8 @@ ln -s ../../../node_modules/karkhana/habit-hooks/oversized-describe.md .habit-ho
 ```
 
 Unlike the workflows, this doesn't follow `@main`. The project's `package-lock.json` pins the karkhana commit it
-installed, and a change here reaches the project when it runs `npm update karkhana` and commits the lock file.
+installed, and a change here reaches the project when it runs `npm install --save-dev github:ahmedavais/karkhana` and
+commits the lock file. `npm update karkhana` leaves a git dependency's pin where it is.
 
 ## Dependency updates
 

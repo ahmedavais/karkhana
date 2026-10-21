@@ -161,7 +161,8 @@ update:
   proposed in a pull request of their own that never merges itself: every project runs these workflows at `@main`
 - Commits start with `ci:`, or `fix:` for a security fix
 
-A project opts in only once CI runs on its pull requests, because Renovate merges when no check is failing. It adds a
+A project opts in only once CI runs on its pull requests: with no checks, Renovate leaves an update open and tells no
+one. It adds a
 `renovate.json` and gets the Mend Renovate GitHub App installed on its repo:
 
 ```json

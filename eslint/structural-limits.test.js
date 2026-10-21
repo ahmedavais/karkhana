@@ -97,3 +97,12 @@ test('a test over 30 lines in a test file is a warning', () => {
 
   assert.deepEqual(findings, [{ ruleId: 'karkhana/max-lines-per-function', severity: 'warning' }]);
 });
+
+test('a skipped or focused describe block is held to the same 100 lines', () => {
+  const skipped = describeBlockOf(60).replace('describe(', 'describe.skip(');
+  const focused = describeBlockOf(60).replace('describe(', 'describe.only(');
+
+  const findings = findingsInTestFile(`${skipped}\n${focused}`);
+
+  assert.deepEqual(findings, []);
+});

@@ -2,9 +2,13 @@ import { builtinRules } from 'eslint/use-at-your-own-risk';
 
 const coreRule = builtinRules.get('max-lines-per-function');
 
+function suiteName(callee) {
+  return callee.type === 'MemberExpression' ? callee.object.name : callee.name;
+}
+
 function isDescribeCallback(node) {
   const call = node.parent;
-  return call.type === 'CallExpression' && call.callee.name === 'describe' && call.arguments.includes(node);
+  return call.type === 'CallExpression' && suiteName(call.callee) === 'describe' && call.arguments.includes(node);
 }
 
 function coreRuleLimitedTo(max, context, report) {

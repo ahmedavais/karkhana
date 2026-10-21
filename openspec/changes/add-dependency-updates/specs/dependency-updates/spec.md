@@ -76,12 +76,12 @@ has passed, and SHALL NOT merge while any check is pending or failing.
 - **THEN** the pull request stays open
 
 ### Requirement: What needs Ahmed comes to Ahmed
-An update that will not merge itself SHALL be assigned to Ahmed, so he is notified, and no standing issue or dashboard
-SHALL list pending updates.
+An update that will not merge itself SHALL be assigned to Ahmed, so he is notified; one whose check fails SHALL be
+assigned as soon as the check fails. No standing issue or dashboard SHALL list pending updates.
 
 #### Scenario: A check fails
 - **WHEN** any check on an update pull request fails
-- **THEN** the pull request stays open and is assigned to Ahmed
+- **THEN** the pull request stays open and is assigned to Ahmed within minutes of the failure
 
 #### Scenario: A major release
 - **WHEN** a dependency has a new major release

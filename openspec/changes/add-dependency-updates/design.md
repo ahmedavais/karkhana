@@ -27,7 +27,7 @@ ESLint limits package, which pins per project; the preset deliberately doesn't, 
 "Projects opt in").
 
 **First-instance audit.** Three firsts: the first third-party GitHub App with write access, the first bot that merges
-into Ahmed's repos, and the first custom (regex) Renovate manager. None needs a helper; each is one block of config.
+into Ahmed's repos, the first custom (regex) Renovate manager, and the first workflow that acts on a pull request rather than checking it. None needs a helper; each is one block of config.
 Recorded here so the next bot or regex manager follows these.
 
 ## Goals / Non-Goals
@@ -59,6 +59,17 @@ required checks, and the private project can't have any.
 **Assignment.** `assignees: ["ahmedavais"]` and the default `assignAutomerge: false`: an automerging pull request is
 assigned only when its checks fail; majors get `automerge: false`, so they are assigned at creation. `dependencyDashboard:
 false`, so no issue lists pending updates.
+
+**Failure alarm.** Renovate assigns a failed update only during a run, and Mend's free queue decides when runs happen:
+the throwaway repo's failed update waited more than 24 hours for one (measured). GitHub notifies nobody about a failed
+run that Renovate's bot triggered (measured: no email for two failures). So karkhana gets `failed-update-alarm.yml`, a
+reusable workflow each project's CI calls as its last job, with `needs` on every other job and
+`if: failure() && github.event.pull_request.user.login == 'renovate[bot]'`. It assigns the pull request to the
+repository owner with `GITHUB_TOKEN`, so it names no one and needs no secret. An assignment reaches Ahmed's phone
+through GitHub Mobile and his email. Renovate's own assignment on its next run stays as a backup. Alternatives
+rejected: `assignAutomerge: true` (an email for every routine pull request), self-hosted Renovate (a token to keep
+alive, and it still waits for a scheduled run), Mend's paid plan (not free, still scheduled), the Dependency Dashboard
+(an issue backlog).
 
 **Timing.** `schedule: ["before 9am on monday"]` and `timezone: "America/New_York"` (Ahmed's clock, EDT).
 `minimumReleaseAge: "14 days"` with `internalChecksFilter: "strict"`, so a release younger than that opens no pull
@@ -97,9 +108,9 @@ the no-checks behavior is proven; then the other projects that call karkhana, on
   Claude subscription. Accepted: it's the point of merging through pull requests
 - [An expired review token fails every update's checks] → every update is then assigned to Ahmed, which is loud, and
   the token reminder already exists
-- [A failed update is assigned only on Renovate's next run] → a finished check doesn't start a run. Mend runs a repo
-  every 4 hours once one of its Renovate pull requests has merged, and daily until then, so the email can lag the
-  failure by up to a day. Accepted for weekly updates
+- [A green update merges only on Renovate's next run] → a finished check doesn't start a run, and Mend's free queue
+  has taken more than a day. Accepted: a weekly update waiting a day is harmless, and failures don't wait (Failure
+  alarm)
 - [Lock file refreshes make large diffs] → CI judges them, and a failure comes to Ahmed
 - [Whether OSV-based pull requests take the `vulnerabilityAlerts` settings] → inferred from Renovate's docs, verified
   on the first real security fix

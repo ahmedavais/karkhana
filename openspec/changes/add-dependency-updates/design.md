@@ -97,6 +97,9 @@ the no-checks behavior is proven; then the other projects that call karkhana, on
   Claude subscription. Accepted: it's the point of merging through pull requests
 - [An expired review token fails every update's checks] → every update is then assigned to Ahmed, which is loud, and
   the token reminder already exists
+- [A failed update is assigned only on Renovate's next run] → a finished check doesn't start a run. Mend runs a repo
+  every 4 hours once one of its Renovate pull requests has merged, and daily until then, so the email can lag the
+  failure by up to a day. Accepted for weekly updates
 - [Lock file refreshes make large diffs] → CI judges them, and a failure comes to Ahmed
 - [Whether OSV-based pull requests take the `vulnerabilityAlerts` settings] → inferred from Renovate's docs, verified
   on the first real security fix

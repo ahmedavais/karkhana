@@ -4,7 +4,8 @@
   "type": "module",
   "files": [
     "eslint/structural-limits.js",
-    "eslint/lengths-in-test-files.js"
+    "eslint/lengths-in-test-files.js",
+    "habit-hooks/oversized-describe.md"
   ],
   "exports": {
     "./eslint-limits": "./eslint/structural-limits.js"

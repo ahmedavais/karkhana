@@ -172,7 +172,7 @@ A project opts in only once CI runs on its pull requests, because Renovate merge
 
 Renovate assigns a failed update only on its next run, which can be a day away, and GitHub tells nobody when a run
 started by Renovate's bot fails. So the project's CI ends with the failed update alarm, which assigns a Renovate pull
-request to the repository owner as soon as any job before it fails:
+request to the repository owner once every job before it has finished and one has failed:
 
 ```yaml
 jobs:

@@ -3,7 +3,9 @@ import { builtinRules } from 'eslint/use-at-your-own-risk';
 const coreRule = builtinRules.get('max-lines-per-function');
 
 function suiteName(callee) {
-  return callee.type === 'MemberExpression' ? callee.object.name : callee.name;
+  if (callee.type === 'MemberExpression') return suiteName(callee.object);
+  if (callee.type === 'CallExpression') return suiteName(callee.callee);
+  return callee.name;
 }
 
 function isDescribeCallback(node) {

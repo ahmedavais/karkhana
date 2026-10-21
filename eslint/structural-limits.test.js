@@ -106,3 +106,11 @@ test('a skipped or focused describe block is held to the same 100 lines', () => 
 
   assert.deepEqual(findings, []);
 });
+
+test('a describe block run once per case is held to the same 100 lines', () => {
+  const perCase = describeBlockOf(60).replace('describe(', 'describe.each([1, 2])(');
+
+  const findings = findingsInTestFile(perCase);
+
+  assert.deepEqual(findings, []);
+});

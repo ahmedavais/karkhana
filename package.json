@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "files": [
-    "eslint/structural-limits.js"
+    "eslint/structural-limits.js",
+    "eslint/max-lines-per-function.js"
   ],
   "exports": {
     "./eslint-limits": "./eslint/structural-limits.js"

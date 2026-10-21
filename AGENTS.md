@@ -11,7 +11,8 @@ Shared GitHub workflows for Ahmed's projects. See `README.md` for what each one 
   conventions belong in its `AGENTS.md`
 - karkhana is also a private npm package that projects install from GitHub. `eslint/structural-limits.js` holds the
   shared ESLint limits, and its tests lint snippets exactly at and one past each limit, so changing a limit means
-  changing a test. Projects pin a commit in their lock file and take changes with `npm update karkhana`, not at `@main`.
+  changing a test. Projects pin a commit in their lock file and take changes with
+  `npm install --save-dev github:ahmedavais/karkhana` (`npm update` leaves the pin), not at `@main`.
   In test files, `eslint/lengths-in-test-files.js` holds `describe` callbacks to 100 lines and everything else to 30,
   and `habit-hooks/oversized-describe.md` is the guide projects link for a long `describe`. Both ship through `files`
   in `package.json`; a file left out of it is missing in every project. The rules wrap ESLint's own rule, so `eslint` is a

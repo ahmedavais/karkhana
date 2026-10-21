@@ -13,6 +13,11 @@ function findingsInTestFile(code) {
   return findingsFor(code, 'module.test.js');
 }
 
+function testOf(lineCount) {
+  const steps = Array.from({ length: lineCount - 2 }, () => 'x += 1;').join('\n');
+  return `it('behaves', () => {\n${steps}\n});`;
+}
+
 function describeBlockOf(lineCount) {
   const tests = Array.from({ length: lineCount - 2 }, (_, n) => `it('behaves ${n}', () => {});`).join('\n');
   return `describe('module', () => {\n${tests}\n});`;
@@ -73,9 +78,22 @@ test('a describe block of 100 lines in a test file lints clean', () => {
 });
 
 test('a describe block over 100 lines asks whether the module under test does more than one thing', () => {
-  const [finding] = new Linter().verify(describeBlockOf(101), structuralLimits, 'module.test.js');
+  const findings = new Linter().verify(describeBlockOf(101), structuralLimits, 'module.test.js');
 
-  assert.equal(finding.ruleId, 'karkhana/max-lines-per-function');
-  assert.equal(finding.severity, 1);
-  assert.match(finding.message, /describe has too many lines \(101\)\. Maximum allowed is 100: does the module under test do more than one thing\?/);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].ruleId, 'karkhana/max-lines-per-function');
+  assert.equal(findings[0].severity, 1);
+  assert.match(findings[0].message, /describe has too many lines \(101\)\. Maximum allowed is 100: does the module under test do more than one thing\?/);
+});
+
+test('a test of 30 lines in a test file lints clean', () => {
+  const findings = findingsInTestFile(`let x = 0;\n${testOf(30)}`);
+
+  assert.deepEqual(findings, []);
+});
+
+test('a test over 30 lines in a test file is a warning', () => {
+  const findings = findingsInTestFile(`let x = 0;\n${testOf(31)}`);
+
+  assert.deepEqual(findings, [{ ruleId: 'karkhana/max-lines-per-function', severity: 'warning' }]);
 });

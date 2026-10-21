@@ -73,6 +73,13 @@ rejected: `assignAutomerge: true` (an email for every routine pull request), sel
 alive, and it still waits for a scheduled run), Mend's paid plan (not free, still scheduled), the Dependency Dashboard
 (an issue backlog).
 
+**No adversarial review on update pull requests.** The shared review workflow skips pull requests opened by
+`renovate[bot]`. This reverses the grilling's "CI and the adversarial review see every update": the review's action
+refuses runs started by a bot unless told otherwise, so it would fail every update and block every merge. And an update
+changes version numbers and lock file hashes, not code the reviewer can read, so CI is the real judge. The 14-day wait,
+CI, and Ahmed for majors and workflow tools are the protections. Alternative rejected: allowing Renovate in the
+action's `allowed_bots`, which costs review runs and feeds upstream release notes to the reviewer for almost no review.
+
 **Timing.** `schedule: ["before 9am on monday"]` and `timezone: "America/New_York"` (Ahmed's clock, EDT).
 `minimumReleaseAge: "14 days"` with `internalChecksFilter: "strict"`, so a release younger than that opens no pull
 request at all rather than a waiting one.
@@ -103,13 +110,9 @@ the no-checks behavior is proven; then the other projects that call karkhana, on
 ## Risks / Trade-offs
 
 - [Renovate has write access to the repos] → only the five opted-in repos are granted, and every merge goes through a
-  pull request with CI and the adversarial review
+  pull request with CI
 - [No checks at all on a pull request, for example a workflow that didn't trigger] → unknown whether Renovate then
   merges. Verified during apply with a plant before any project opts in beyond agile-7.com
-- [The adversarial review runs on every update pull request] → two or three runs per project per week on Ahmed's
-  Claude subscription. Accepted: it's the point of merging through pull requests
-- [An expired review token fails every update's checks] → the review is its own workflow, so the alarm doesn't see it,
-  and every update is assigned to Ahmed only on Renovate's next run. The token reminder already exists
 - [A CI job missing from the alarm's `needs`, or cancelled rather than failed] → no alarm; Renovate's next run assigns
   it. Accepted for now: the README says `needs` lists every other job
 - [A green update merges only on Renovate's next run] → a finished check doesn't start a run, and Mend's free queue

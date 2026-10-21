@@ -41,6 +41,7 @@ jobs:
 
 Claude Code reviews every pull request from the project's own branches, assuming there is a real problem and
 looking for it. It posts inline comments and one summary comment. It only comments; it never blocks a merge.
+It skips Renovate's pull requests: they change versions, not code it can read, and CI judges them.
 
 The brief lives here, in `briefs/adversarial-review.md`, read from karkhana's main branch, so a pull request can't
 rewrite it. A pull request can still edit the project's `AGENTS.md`, so the brief treats any rule loosened there as a

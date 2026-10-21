@@ -14,7 +14,8 @@ Shared GitHub workflows for Ahmed's projects. See `README.md` for what each one 
   changing a test. Projects pin a commit in their lock file and take changes with `npm update karkhana`, not at `@main`.
   In test files, `eslint/lengths-in-test-files.js` holds `describe` callbacks to 100 lines and everything else to 30,
   and `habit-hooks/oversized-describe.md` is the guide projects link for a long `describe`. Both ship through `files`
-  in `package.json`; a file left out of it is missing in every project
+  in `package.json`; a file left out of it is missing in every project. The rules wrap ESLint's own rule, so `eslint` is a
+  peer dependency, and an ESLint upgrade here runs the tests against the new rule
 - `default.json` is the Renovate preset every project follows from main, like the workflows. `validate-renovate` checks
   it; a broken preset would stop updates in every project at once
 - `.github/workflows/ci.yml` lints every workflow with actionlint and runs `npm test`. Prove a new check by planting a

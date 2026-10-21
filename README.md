@@ -99,6 +99,12 @@ Structural limits every TypeScript project shares: more than 3 parameters, nesti
 complexity over 10 are errors; a function over 30 lines is a warning, so a project with long functions stays green
 while Habit Hooks coaches them as they get touched. `eslint/structural-limits.test.js` lints a snippet against each.
 
+In test files (`*.test.*`) a `describe` callback is held to 100 lines instead of 30. Each test inside is usually
+short; the block is long because the module under test has many behaviors, so past 100 lines the warning asks whether
+that module does more than one thing. Every other function in a test file, `it` callbacks included, keeps the 30-line
+limit. ESLint has no option for this, so `eslint/lengths-in-test-files.js` wraps its own `max-lines-per-function` as
+two rules, `karkhana/max-lines-per-function` and `karkhana/max-lines-per-describe`.
+
 A project installs karkhana straight from GitHub and spreads the limits into its `eslint.config.js`:
 
 ```sh
@@ -112,6 +118,26 @@ export default tseslint.config(
   // the project's own configs
   structuralLimits,
 );
+```
+
+Habit Hooks only knows ESLint's own rule names, so a project that uses it routes karkhana's two rules in
+`.habit-hooks/config.toml`:
+
+```toml
+[smells."karkhana/max-lines-per-function"]
+severity = "enforced"
+guide = "oversized-function.md"
+
+[smells."karkhana/max-lines-per-describe"]
+severity = "enforced"
+guide = "oversized-describe.md"
+```
+
+and links the describe guide from karkhana, so Claude is pointed at the module rather than told to split the block:
+
+```sh
+mkdir -p .habit-hooks/generic/guides
+ln -s ../../../node_modules/karkhana/habit-hooks/oversized-describe.md .habit-hooks/generic/guides/oversized-describe.md
 ```
 
 Unlike the workflows, this doesn't follow `@main`. The project's `package-lock.json` pins the karkhana commit it

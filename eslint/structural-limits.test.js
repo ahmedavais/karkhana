@@ -3,10 +3,19 @@ import { test } from 'node:test';
 import { Linter } from 'eslint';
 import { structuralLimits } from './structural-limits.js';
 
-function findingsFor(code) {
+function findingsFor(code, filename = 'module.js') {
   return new Linter()
-    .verify(code, [structuralLimits])
+    .verify(code, structuralLimits, filename)
     .map(({ ruleId, severity }) => ({ ruleId, severity: severity === 2 ? 'error' : 'warning' }));
+}
+
+function findingsInTestFile(code) {
+  return findingsFor(code, 'module.test.js');
+}
+
+function describeBlockOf(lineCount) {
+  const tests = Array.from({ length: lineCount - 2 }, (_, n) => `it('behaves ${n}', () => {});`).join('\n');
+  return `describe('module', () => {\n${tests}\n});`;
 }
 
 test('a function with more than 3 parameters is an error', () => {
@@ -53,6 +62,12 @@ function atParameterAndDepthLimits(a, b, c) {
 function atComplexityLimit(x) {\n${nineBranches}\nreturn -1;\n}
 function atLengthLimit(x) {\n${twentySevenLines}\nreturn x;\n}
 `);
+
+  assert.deepEqual(findings, []);
+});
+
+test('a describe block of 100 lines in a test file lints clean', () => {
+  const findings = findingsInTestFile(describeBlockOf(100));
 
   assert.deepEqual(findings, []);
 });

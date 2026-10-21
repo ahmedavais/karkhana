@@ -99,7 +99,8 @@ Structural limits every TypeScript project shares: more than 3 parameters, nesti
 complexity over 10 are errors; a function over 30 lines is a warning, so a project with long functions stays green
 while Habit Hooks coaches them as they get touched. `eslint/structural-limits.test.js` lints a snippet against each.
 
-In test files (`*.test.*`) a `describe` callback is held to 100 lines instead of 30. Each test inside is usually
+In test files (`*.test.*`) a `describe` callback is held to 100 lines instead of 30, in any form that names
+`describe`: `.skip`, `.only`, `.each` and Playwright's `test.describe` included. Each test inside is usually
 short; the block is long because the module under test has many behaviors, so past 100 lines the warning asks whether
 that module does more than one thing. Every other function in a test file, `it` callbacks included, keeps the 30-line
 limit. ESLint has no option for this, so `eslint/lengths-in-test-files.js` wraps its own `max-lines-per-function` as

@@ -122,3 +122,11 @@ test('a describe block run once per row of a table is held to the same 100 lines
 
   assert.deepEqual(findings, []);
 });
+
+test('a describe block hung off a test function is held to the same 100 lines', () => {
+  const grouped = describeBlockOf(60).replace('describe(', 'test.describe(');
+
+  const findings = findingsInTestFile(grouped);
+
+  assert.deepEqual(findings, []);
+});

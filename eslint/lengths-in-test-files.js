@@ -2,16 +2,16 @@ import { builtinRules } from 'eslint/use-at-your-own-risk';
 
 const coreRule = builtinRules.get('max-lines-per-function');
 
-function suiteName(callee) {
-  if (callee.type === 'MemberExpression') return suiteName(callee.object);
-  if (callee.type === 'CallExpression') return suiteName(callee.callee);
-  if (callee.type === 'TaggedTemplateExpression') return suiteName(callee.tag);
-  return callee.name;
+function namesIn(callee) {
+  if (callee.type === 'MemberExpression') return [...namesIn(callee.object), callee.property.name];
+  if (callee.type === 'CallExpression') return namesIn(callee.callee);
+  if (callee.type === 'TaggedTemplateExpression') return namesIn(callee.tag);
+  return [callee.name];
 }
 
 function isDescribeCallback(node) {
   const call = node.parent;
-  return call.type === 'CallExpression' && suiteName(call.callee) === 'describe' && call.arguments.includes(node);
+  return call.type === 'CallExpression' && namesIn(call.callee).includes('describe') && call.arguments.includes(node);
 }
 
 function coreRuleLimitedTo(max, context, report) {

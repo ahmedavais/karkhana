@@ -13,11 +13,11 @@
 - [x] 2.2c Move the job into karkhana as the reusable `.github/workflows/failed-update-alarm.yml`, documented in `README.md`, and point the throwaway repo's CI at it. Verify: the 2.2b check passes again through the shared workflow; karkhana's checks and review pass; merged
 - [x] 2.3 In the same repo, switch the CI to always pass. Verify: Renovate merges the pull request on a later run, with a commit message starting `ci:`. Result: merged 9 minutes after CI went green, as `ci: Update dependency ms to v2.1.3 (#1)`
 - [x] 2.4 Remove the CI workflow and let Renovate open another update. Verify what Renovate does with no checks at all; if it merges, add the guard Renovate offers for that case to `default.json` (through a karkhana PR, proven the same way) before any other project opts in. Result: with only Renovate's own `renovate/stability-days` status, a requested run neither merged nor assigned the update, so no guard is needed
-- [ ] 2.5 Delete the throwaway repo and remove it from the app's access. Verify: `gh repo view` reports it gone
+- [x] 2.5 Delete the throwaway repo and remove it from the app's access. Verify: `gh repo view` reports it gone
 
 ## 3. agile-7.com opts in
 
-- [ ] 3.1 Ahmed adds agile-7.com to the app's access, after 2.4. Add `renovate.json` extending `github>ahmedavais/karkhana`, the failed update alarm as the last job of its CI, and a Dependency updates line in `AGENTS.md`'s checks list. Verify: the PR's checks and review pass; merged
+- [x] 3.1 Ahmed adds agile-7.com to the app's access, after 2.4. Add `renovate.json` extending `github>ahmedavais/karkhana`, the failed update alarm as the last job of its CI, and a Dependency updates line in `AGENTS.md`'s checks list. Verify: the PR's checks and review pass; merged
 - [ ] 3.2 Watch the first weekly group and lock file refresh. Verify: both pull requests merge themselves on green CI, deploy and production watch pass afterwards, and `npm audit` on main shows fewer high-severity vulnerabilities than before
 - [ ] 3.3 Check the karkhana pin moved with the lock refresh. Verify: `package-lock.json` on main resolves karkhana to its current main commit
 

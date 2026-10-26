@@ -151,7 +151,7 @@ commits the lock file. `npm update karkhana` leaves a git dependency's pin where
 `default.json` is the Renovate preset every project follows, so dependencies stay current without anyone running an
 update:
 
-- Patch and minor updates arrive as one pull request on Monday mornings, and a lock file refresh as a second. Each
+- Patch and minor updates arrive as one pull request on Mondays, and a lock file refresh as a second. Each
   merges itself once every check on it passes
 - A release is taken only once it is 14 days old. A fix for a known vulnerability in a direct dependency skips the
   wait and the schedule, in a pull request of its own; transitive fixes arrive with Monday's lock file refresh

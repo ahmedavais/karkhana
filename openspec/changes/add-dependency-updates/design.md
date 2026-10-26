@@ -80,7 +80,10 @@ changes version numbers and lock file hashes, not code the reviewer can read, so
 CI, and Ahmed for majors and workflow tools are the protections. Alternative rejected: allowing Renovate in the
 action's `allowed_bots`, which costs review runs and feeds upstream release notes to the reviewer for almost no review.
 
-**Timing.** `schedule: ["before 9am on monday"]` and `timezone: "America/New_York"` (Ahmed's clock, EDT).
+**Timing.** `schedule: ["on monday"]` and `timezone: "America/New_York"` (Ahmed's clock, EDT). The window was
+"before 9am on monday" until the first Monday on agile-7.com: Mend ran the repo at 11:00, 14:00 and 17:00 but never
+before 9, so no update opened. A repo no Renovate pull request has merged in yet gets a scheduled run only once a
+day, so a window shorter than a day can miss it week after week.
 `minimumReleaseAge: "14 days"` with `internalChecksFilter: "strict"`, so a release younger than that opens no pull
 request at all rather than a waiting one.
 

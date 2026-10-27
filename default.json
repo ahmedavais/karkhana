@@ -24,7 +24,7 @@
     "schedule": [
       "on monday"
     ],
-    "automerge": true
+    "automerge": false
   },
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {

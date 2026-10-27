@@ -41,6 +41,10 @@ request of their own, so fixes in dependencies that no manifest names directly a
 - **WHEN** the same Monday run also opens the weekly group, a major and a workflow tools update
 - **THEN** the lock file refresh opens in that run too, rather than waiting for a slot
 
+#### Scenario: A refresh with every check green
+- **WHEN** every check on a lock file refresh has passed
+- **THEN** it stays open, assigned to Ahmed, until he merges it
+
 ### Requirement: Ordinary releases wait 14 days
 An update that is not a security fix SHALL be proposed only once the release is at least 14 days old.
 

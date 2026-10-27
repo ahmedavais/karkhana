@@ -95,7 +95,14 @@ day, so a window shorter than a day can miss it week after week.
 request at all rather than a waiting one.
 
 **Grouping.** One `packageRules` entry groups `minor` and `patch` updates as `weekly updates` with
-`commitMessagePrefix: "ci:"`. `lockFileMaintenance` is enabled on the same schedule, automerges, and uses `ci:`.
+`commitMessagePrefix: "ci:"`. `lockFileMaintenance` is enabled on the same schedule and uses `ci:`, but comes to
+Ahmed with `automerge: false`. A refresh has no release date, and Renovate's default
+`minimumReleaseAgeBehaviour: "timestamp-required"` keeps an undated update's `renovate/stability-days` pending forever,
+so karkhana's first refresh sat green apart from that status and never merged. Renovate assigns a pull request that
+won't merge itself when it opens it, so the refresh reaches Ahmed the same Monday. Alternatives rejected for now:
+`timestamp-optional`, which lets the refresh merge itself but takes transitive releases of any age, the supply-chain
+risk the 14-day wait guards against; and that plus npm's own `min-release-age=14` in each project's `.npmrc`, which
+needs npm 12 and isn't yet proven to hold in Mend's run. That one is the way back to an unattended refresh.
 `prHourlyLimit: 0` lifts Renovate's default of 2 new pull requests an hour. On agile-7.com's first Monday the run
 opened the weekly group and a TypeScript major, which used the hour, and the lock file refresh never opened, so the
 transitive fixes and the karkhana pin waited a week. Grouping and the weekly schedule already keep the count to a few

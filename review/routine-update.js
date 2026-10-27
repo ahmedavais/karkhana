@@ -1,4 +1,5 @@
 const RENOVATE = 'renovate[bot]';
+const GITHUB_SIGNER = 'web-flow';
 
 const DEPENDENCY_FILES = new Set([
   'package.json',
@@ -14,11 +15,11 @@ const DEPENDENCY_FILES = new Set([
 ]);
 
 function isDependencyFile(path) {
-  return DEPENDENCY_FILES.has(path.split('/').at(-1));
+  return !path.startsWith('.github/') && DEPENDENCY_FILES.has(path.split('/').at(-1));
 }
 
-function isRenovateCommit({ author, verified }) {
-  return author === RENOVATE && verified;
+function isRenovateCommit({ author, committer, signature }) {
+  return author === RENOVATE && committer === GITHUB_SIGNER && signature === 'valid';
 }
 
 export function isRoutineUpdate({ author, commits, files }) {

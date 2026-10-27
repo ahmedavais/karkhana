@@ -74,8 +74,11 @@ alive, and it still waits for a scheduled run), Mend's paid plan (not free, stil
 (an issue backlog).
 
 **No adversarial review on routine update pull requests.** The shared review workflow skips a pull request only
-when `renovate[bot]` opened it, every commit is Renovate's with a verified signature, and every changed file is a
-dependency manifest or lock file (`review/routine-update.js`). The first version skipped on the author alone; the
+when `renovate[bot]` opened it, every commit has `renovate[bot]` as author and `web-flow` (GitHub) as the committer
+with a valid signature, and every changed file outside `.github/` is a dependency manifest or lock file
+(`review/routine-update.js`). The review of that change found that `verified` alone accepts any key matching the
+committer, while the author is a free field. Manifests are trusted by name: a content check can't tell a version line
+from a `scripts` line, and these repos have one writer, who can also commit through the API as any author. The first version skipped on the author alone; the
 review found that an automerged `github-actions` update edits workflow files, and a commit pushed onto a Renovate
 branch keeps the author, so both now get the review. A reviewed Renovate pull request passes `allowed_bots:
 renovate` to the action. The rest of this paragraph is why the routine ones skip. This reverses the grilling's "CI and the adversarial review see every update": the review's action

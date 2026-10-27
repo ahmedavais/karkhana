@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { isRoutineUpdate } from './routine-update.js';
 
-const renovateCommit = { author: 'renovate[bot]', verified: true };
+const renovateCommit = { author: 'renovate[bot]', committer: 'web-flow', signature: 'valid' };
 
 function update(changes = {}) {
   return { author: 'renovate[bot]', commits: [renovateCommit], files: ['package-lock.json'], ...changes };
@@ -29,15 +29,25 @@ test('a Renovate pull request touching any other file is not routine', () => {
 });
 
 test('a commit someone else pushed onto a Renovate branch makes it not routine', () => {
-  const commits = [renovateCommit, { author: 'ahmedavais', verified: true }];
+  const commits = [renovateCommit, { author: 'ahmedavais', committer: 'web-flow', signature: 'valid' }];
 
   assert.equal(isRoutineUpdate(update({ commits })), false);
 });
 
 test('an unsigned commit claiming to be Renovate makes it not routine', () => {
-  const commits = [{ author: 'renovate[bot]', verified: false }];
+  const commits = [{ ...renovateCommit, signature: 'unsigned' }];
 
   assert.equal(isRoutineUpdate(update({ commits })), false);
+});
+
+test('a commit with Renovate as author but someone else as signing committer makes it not routine', () => {
+  const commits = [{ ...renovateCommit, committer: 'ahmedavais' }];
+
+  assert.equal(isRoutineUpdate(update({ commits })), false);
+});
+
+test('a manifest under .github is not routine', () => {
+  assert.equal(isRoutineUpdate(update({ files: ['.github/actions/setup/package.json'] })), false);
 });
 
 test('a pull request with no changed files listed is not routine', () => {

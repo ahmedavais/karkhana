@@ -6,8 +6,8 @@ function lines(text = '') {
 }
 
 function commitFrom(line) {
-  const [author, verified] = line.trim().split(/\s+/);
-  return { author, verified: verified === 'true' };
+  const [author, committer, signature] = line.trim().split(/\s+/);
+  return { author, committer, signature };
 }
 
 const routine = isRoutineUpdate({

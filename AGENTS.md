@@ -17,6 +17,8 @@ Shared GitHub workflows for Ahmed's projects. See `README.md` for what each one 
   and `habit-hooks/oversized-describe.md` is the guide projects link for a long `describe`. Both ship through `files`
   in `package.json`; a file left out of it is missing in every project. The rules wrap ESLint's own rule, so `eslint`
   is a peer dependency, and an ESLint upgrade here runs the tests against the new rule
+- `review/routine-update.js` decides which Renovate pull requests the review skips; the review job runs it from
+  karkhana's main checkout, like the brief
 - `default.json` is the Renovate preset every project follows from main, like the workflows. `validate-renovate` checks
   it; a broken preset would stop updates in every project at once
 - `.github/workflows/ci.yml` lints every workflow with actionlint and runs `npm test`. Prove a new check by planting a

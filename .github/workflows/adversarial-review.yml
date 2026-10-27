@@ -36,9 +36,11 @@ jobs:
           COMMITS="$(gh api --paginate "repos/$REPO/pulls/$PR/commits" --jq '.[] | "\(.author.login // "unknown") \(.committer.login // "unknown") \(.commit.verification.reason)"')"
           export FILES COMMITS
           node .karkhana/review/routine-update-cli.js
-      - if: steps.scope.outputs.routine != 'true'
+      - id: first-attempt
+        if: steps.scope.outputs.routine != 'true'
+        continue-on-error: true
         uses: anthropics/claude-code-action@v1
-        with:
+        with: &review
           allowed_bots: renovate
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -50,3 +52,15 @@ jobs:
             directory. karkhana's main branch is checked out in .karkhana: the shared workflows this project calls.
           claude_args: |
             --allowedTools "Read,Glob,Grep,mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
+      - id: errored
+        if: steps.first-attempt.outcome == 'failure' && steps.first-attempt.outputs.execution_file != ''
+        env:
+          EXECUTION_FILE: ${{ steps.first-attempt.outputs.execution_file }}
+        run: node .karkhana/review/review-error-cli.js
+      - if: steps.errored.outputs.retry == 'true'
+        uses: anthropics/claude-code-action@v1
+        with: *review
+      - if: steps.first-attempt.outcome == 'failure' && steps.errored.outputs.retry != 'true'
+        run: |
+          echo "::error::The review failed in a way a retry wouldn't fix, such as a setup error or running out of turns"
+          exit 1

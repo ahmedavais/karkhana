@@ -89,6 +89,11 @@ request at all rather than a waiting one.
 
 **Grouping.** One `packageRules` entry groups `minor` and `patch` updates as `weekly updates` with
 `commitMessagePrefix: "ci:"`. `lockFileMaintenance` is enabled on the same schedule, automerges, and uses `ci:`.
+`prHourlyLimit: 0` lifts Renovate's default of 2 new pull requests an hour. On agile-7.com's first Monday the run
+opened the weekly group and a TypeScript major, which used the hour, and the lock file refresh never opened, so the
+transitive fixes and the karkhana pin waited a week. Grouping and the weekly schedule already keep the count to a few
+pull requests a Monday. Alternative rejected: a higher `prPriority` for the lock file refresh, which still leaves a
+third update waiting a week behind the limit.
 
 **Security fixes.** `osvVulnerabilityAlerts: true`, and `vulnerabilityAlerts` sets `minimumReleaseAge: null` and
 `commitMessagePrefix: "fix:"`. It deliberately doesn't set `automerge`: Renovate applies `vulnerabilityAlerts` after
@@ -115,8 +120,10 @@ each.
 
 - [Renovate has write access to the repos] → only the five opted-in repos are granted, and every merge goes through a
   pull request with CI
-- [No checks at all on a pull request, for example a workflow that didn't trigger] → Renovate doesn't merge it
-  (measured), but it doesn't assign it either, so the update waits without telling anyone. A project opts in only
+- [No checks at all on a pull request, for example a workflow that didn't trigger] → Renovate didn't merge it
+  (measured once, on an update carrying Renovate's `renovate/stability-days` status; a security fix has no release
+  age and so no such status, and wasn't measured), but it didn't assign it either, so the update waits without telling
+  anyone. A project opts in only
   once CI runs on its pull requests
 - [A CI job missing from the alarm's `needs`, or cancelled rather than failed] → no alarm; Renovate's next run assigns
   it. Accepted for now: the README says `needs` lists every other job

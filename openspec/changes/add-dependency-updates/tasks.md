@@ -19,6 +19,7 @@
 
 - [x] 3.1 Ahmed adds agile-7.com to the app's access, after 2.4. Add `renovate.json` extending `github>ahmedavais/karkhana`, the failed update alarm as the last job of its CI, and a Dependency updates line in `AGENTS.md`'s checks list. Verify: the PR's checks and review pass; merged
 - [ ] 3.2 Watch the first weekly group and lock file refresh. Verify: both pull requests merge themselves on green CI, deploy and production watch pass afterwards, and `npm audit` on main shows fewer high-severity vulnerabilities than before
+- [ ] 3.2b Lift Renovate's default `prHourlyLimit` of 2 in `default.json`, after the first Monday's group and a major used the hour and no lock file refresh opened. Verify: the PR's checks and review pass; merged; on the next Monday the lock file refresh opens on agile-7.com in the same run as the group
 - [ ] 3.3 Check the karkhana pin moved with the lock refresh. Verify: `package-lock.json` on main resolves karkhana to its current main commit
 
 ## 4. The other projects opt in

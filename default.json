@@ -10,6 +10,7 @@
   "minimumReleaseAge": "14 days",
   "internalChecksFilter": "strict",
   "dependencyDashboard": false,
+  "prHourlyLimit": 0,
   "assignees": [
     "ahmedavais"
   ],

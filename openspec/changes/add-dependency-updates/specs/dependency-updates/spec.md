@@ -37,6 +37,10 @@ request of their own, so fixes in dependencies that no manifest names directly a
 - **WHEN** a dependency that no manifest names directly has a fixed version allowed by its parent's range
 - **THEN** the next Monday's lock file refresh moves the project onto the fixed version
 
+#### Scenario: A busy Monday
+- **WHEN** the same Monday run also opens the weekly group, a major and a workflow tools update
+- **THEN** the lock file refresh opens in that run too, rather than waiting for a slot
+
 ### Requirement: Ordinary releases wait 14 days
 An update that is not a security fix SHALL be proposed only once the release is at least 14 days old.
 

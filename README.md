@@ -41,6 +41,8 @@ jobs:
 
 Claude Code reviews every pull request from the project's own branches, assuming there is a real problem and
 looking for it. It posts inline comments and one summary comment. It only comments; it never blocks a merge.
+When Claude's run ends in an error rather than a review, the error shows as a warning on the run and the review
+tries once more; any other failure fails the job straight away.
 It skips a Renovate pull request only when every commit names Renovate as author and GitHub as the signing committer,
 and every changed file outside `.github/` is a dependency manifest or lock file (`review/routine-update.js` lists
 them): those change versions, not code it can read, and CI judges them. A Renovate pull request that touches a

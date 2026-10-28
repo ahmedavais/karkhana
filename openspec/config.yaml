@@ -7,4 +7,4 @@ rules:
 operations:
   apply:
     guidance:
-      - Use the Skill tool to invoke the `implement` skill
+      - Invoke the `implement` skill

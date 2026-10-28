@@ -1,5 +1,7 @@
 # karkhana
 
+[![CI](https://github.com/ahmedavais/karkhana/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ahmedavais/karkhana/actions/workflows/ci.yml)
+
 Karkhana means factory. This repo holds the shared parts of the checks and automation that keep my projects
 honest: GitHub workflows that each project calls instead of keeping its own copy.
 

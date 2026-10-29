@@ -25,6 +25,6 @@
 
 ## 4. The other projects opt in
 
-- [ ] 4.1 Ahmed adds the other projects that call karkhana to the app's access, each with CI on pull requests. Verify: the installation lists them
-- [ ] 4.2 Add `renovate.json`, the failed update alarm job and the AGENTS.md line to each of those projects, one PR each. Verify: each PR's checks and review pass; merged
+- [x] 4.1 Ahmed adds the other projects that call karkhana to the app's access, each with CI on pull requests. Verify: the installation lists them. Result: added after 4.2 merged, so no onboarding pull request opened; Ahmed's screenshot of Mend's installed repositories verified it. One project that freezes soon stays out for now
+- [x] 4.2 Add `renovate.json`, the failed update alarm job and the AGENTS.md line to each of those projects, one PR each. Verify: each PR's checks and review pass; merged. Result: three PRs, each green with no review findings, merged before 4.1. One replaced Dependabot and carried its TypeScript-major ignore into `renovate.json`
 - [ ] 4.3 Record the station in Ahmed's own factory docs, outside this public repo. Verify: Ahmed confirms the docs describe it, and a week later every opted-in project's first group has merged or come to Ahmed

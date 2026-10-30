@@ -42,6 +42,14 @@ test('weekly, session, and alternate subscriber limit messages do not retry', ()
   }
 });
 
+test('rolling-window and model-specific quota limits do not retry', () => {
+  const limits = ['5-hour limit reached', 'Opus limit reached', 'Sonnet limit reached'];
+
+  for (const result of limits) {
+    assert.equal(shouldRetryReview([{ type: 'result', subtype: 'success', is_error: true, result }]), false, result);
+  }
+});
+
 test('a temporary HTTP 429 remains retryable', () => {
   const messages = [{ type: 'result', subtype: 'success', is_error: true, result: 'API Error: 429 Rate limit exceeded, retry later' }];
 

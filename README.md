@@ -47,7 +47,7 @@ and reapply the label to review the current head again. Create the label in the 
 Claude assumes there is a real problem and looks for it. It posts inline comments and one summary comment.
 It only comments; it never blocks a merge.
 When Claude's run ends in an error rather than a review, the error shows as a warning on the run and the review
-tries once more unless the message reports a usage, weekly, or session limit. A usage-limit error keeps its warning
+tries once more unless the message reports a usage, weekly, session, hourly, or model quota limit. A quota error keeps its warning
 and fails without retrying. Setup failures and runs that exhaust their turns also fail without retrying.
 It skips a Renovate pull request only when every commit names Renovate as author and GitHub as the signing committer,
 and every changed file outside `.github/` is a dependency manifest or lock file (`review/routine-update.js` lists

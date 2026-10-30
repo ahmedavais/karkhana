@@ -1,5 +1,5 @@
 const LONGEST_MESSAGE = 300;
-const USAGE_LIMIT = /\b(?:usage|weekly|session) limit\b|\byou(?:['’]ve| have) hit your limit\b/i;
+const USAGE_LIMIT = /\b(?:usage|weekly|session|\d+-hour|opus|sonnet) limit\b|\byou(?:['’]ve| have) hit your limit\b/i;
 
 export function shouldRetryReview(messages) {
   const result = messages.findLast(({ type }) => type === 'result');

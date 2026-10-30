@@ -1,7 +1,10 @@
 const LONGEST_MESSAGE = 300;
+const USAGE_LIMIT = /\b(?:usage|weekly|session) limit\b|\byou(?:['’]ve| have) hit your limit\b/i;
 
 export function shouldRetryReview(messages) {
-  return reviewError(messages) !== null;
+  const result = messages.findLast(({ type }) => type === 'result');
+  const message = result?.result || '';
+  return reviewError(messages) !== null && !USAGE_LIMIT.test(message);
 }
 
 export function reviewError(messages) {

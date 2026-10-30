@@ -62,5 +62,5 @@ jobs:
         with: *review
       - if: steps.first-attempt.outcome == 'failure' && steps.errored.outputs.retry != 'true'
         run: |
-          echo "::error::The review failed in a way a retry wouldn't fix, such as a setup error or running out of turns"
+          echo "::error::The review failed without a retry, such as a setup error, usage limit, or running out of turns"
           exit 1

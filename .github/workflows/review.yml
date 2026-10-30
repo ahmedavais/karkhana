@@ -2,7 +2,7 @@ name: Review karkhana
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, ready_for_review, labeled]
 
 permissions:
   contents: read
@@ -10,6 +10,9 @@ permissions:
 
 jobs:
   review:
+    if: >-
+      github.event.pull_request.draft == false &&
+      (github.event.action != 'labeled' || github.event.label.name == 'review-requested')
     uses: ahmedavais/karkhana/.github/workflows/adversarial-review.yml@main
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

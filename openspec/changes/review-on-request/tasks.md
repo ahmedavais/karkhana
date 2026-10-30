@@ -18,3 +18,5 @@
 - Measured on 2026-10-30: baseline passed 29 tests and actionlint 1.7.12. The retry extraction failed first on the missing export, then on the false decision; all 30 tests passed after extracting the existing policy.
 - Measured on 2026-10-30: usage-limit, subscriber-limit, and post-cutoff fixtures each failed before their policy changes. All 36 tests pass, including real-file CLI output, temporary HTTP 429, and server overload cases; actionlint 1.7.12 passes.
 - Measured on 2026-10-30: actionlint 1.7.12 rejected a scratch copy of the caller containing the planted undefined variable `review_request_typo`; the real workflow passes. Live event verification remains pending on this PR.
+- Measured on 2026-10-30: opening draft PR #33 skipped review run 41059953407. Marking it ready started review run 41060033108. Adding the unrelated `documentation` label skipped review run 41060088091. The initial CI run 41059953084 passed lint-workflows, test, and validate-renovate.
+- Next: verify a new push creates CI without a review run, then apply `review-requested` and verify that it starts review. Caller rollout remains outside this PR.

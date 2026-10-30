@@ -41,10 +41,14 @@ jobs:
 
 ## Adversarial review
 
-Claude Code reviews every pull request from the project's own branches, assuming there is a real problem and
-looking for it. It posts inline comments and one summary comment. It only comments; it never blocks a merge.
+Claude Code reviews a non-draft pull request from the project's own branches when it opens, becomes ready for
+review, or receives the `review-requested` label. A new push or reopening does not request another review. Remove
+and reapply the label to review the current head again. Create the label in the repository before using it.
+Claude assumes there is a real problem and looks for it. It posts inline comments and one summary comment.
+It only comments; it never blocks a merge.
 When Claude's run ends in an error rather than a review, the error shows as a warning on the run and the review
-tries once more; any other failure fails the job straight away.
+tries once more unless the message reports a usage, weekly, session, hourly, or model quota limit. A quota error keeps its warning
+and fails without retrying. Setup failures and runs that exhaust their turns also fail without retrying.
 It skips a Renovate pull request only when every commit names Renovate as author and GitHub as the signing committer,
 and every changed file outside `.github/` is a dependency manifest or lock file (`review/routine-update.js` lists
 them): those change versions, not code it can read, and CI judges them. A Renovate pull request that touches a
@@ -64,7 +68,7 @@ name: Adversarial review
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, ready_for_review, labeled]
 
 permissions:
   contents: read
@@ -72,10 +76,19 @@ permissions:
 
 jobs:
   review:
+    if: >-
+      github.event.pull_request.draft == false &&
+      (github.event.action != 'labeled' || github.event.label.name == 'review-requested')
     uses: ahmedavais/karkhana/.github/workflows/adversarial-review.yml@main
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 ```
+
+Event selection lives in this caller file. Updating the reusable workflow does not change an existing caller's
+triggers; copy the event types and job condition above when adopting this schedule.
+
+Karkhana's own caller also reviews non-draft PRs on `synchronize` and `reopened`. A push here can change the shared
+checks every caller runs at `@main`, so this repository keeps automatic reviews of later commits.
 
 ## Duplication
 

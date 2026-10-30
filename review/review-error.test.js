@@ -61,14 +61,14 @@ test('the CLI keeps a usage-limit warning while writing retry=false', (context) 
   context.after(() => rmSync(folder, { recursive: true, force: true }));
   const executionFile = join(folder, 'execution.json');
   const outputFile = join(folder, 'output');
-  writeFileSync(executionFile, JSON.stringify([{ type: 'result', subtype: 'success', is_error: true, result: 'Usage limit reached' }]));
+  writeFileSync(executionFile, JSON.stringify([{ type: 'result', subtype: 'success', is_error: true, result: "You've hit your weekly limit" }]));
 
   const warning = execFileSync(process.execPath, [fileURLToPath(new URL('./review-error-cli.js', import.meta.url))], {
     encoding: 'utf8',
     env: { ...process.env, EXECUTION_FILE: executionFile, GITHUB_OUTPUT: outputFile },
   });
 
-  assert.match(warning, /::warning title=Review errored::Usage limit reached/);
+  assert.match(warning, /::warning title=Review errored::You've hit your weekly limit/);
   assert.equal(readFileSync(outputFile, 'utf8'), 'retry=false\n');
 });
 

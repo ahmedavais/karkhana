@@ -1,8 +1,14 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { reviewError } from './review-error.js';
+import { reviewError, shouldRetryReview } from './review-error.js';
 
 const turn = { type: 'assistant', message: { content: [] } };
+
+test('a server overload retries the review', () => {
+  const messages = [{ type: 'result', subtype: 'success', is_error: true, result: 'API Error: 529 overloaded' }];
+
+  assert.equal(shouldRetryReview(messages), true);
+});
 
 test('a run whose result is an error gives back its message', () => {
   const messages = [turn, { type: 'result', subtype: 'success', is_error: true, result: 'API Error: 529 overloaded' }];

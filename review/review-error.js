@@ -1,5 +1,9 @@
 const LONGEST_MESSAGE = 300;
 
+export function shouldRetryReview(messages) {
+  return reviewError(messages) !== null;
+}
+
 export function reviewError(messages) {
   const result = messages.findLast(({ type }) => type === 'result');
   if (result?.subtype !== 'success' || !result.is_error) return null;

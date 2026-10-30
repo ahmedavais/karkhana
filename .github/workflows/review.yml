@@ -2,7 +2,7 @@ name: Review karkhana
 
 on:
   pull_request:
-    types: [opened, ready_for_review, labeled]
+    types: [opened, synchronize, reopened, ready_for_review, labeled]
 
 permissions:
   contents: read

@@ -7,6 +7,8 @@ Shared GitHub workflows for Ahmed's projects. See `README.md` for what each one 
 - main only takes pull requests with actionlint and the package tests passing (ruleset). `.github/workflows/review.yml`
   has karkhana's own pull requests reviewed with the shared adversarial review, which asks whether a change lets any
   project's checks pass while checking less
+- Keep automatic reviews on non-draft PR pushes in this repository because its shared checks reach every caller at
+  `@main`. The README caller template uses opened, ready_for_review, and the review-requested label instead
 - `briefs/adversarial-review.md` is the review brief for every project. Keep it generic: a project's own
   conventions belong in its `AGENTS.md`
 - karkhana is also a private npm package that projects install from GitHub. `eslint/structural-limits.js` holds the

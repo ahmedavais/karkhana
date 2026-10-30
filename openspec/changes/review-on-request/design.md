@@ -1,11 +1,14 @@
 ## Review on request
 
-Review a non-draft pull request when it opens, becomes ready for review, or receives the `review-requested` label. A new push does not request another review. Remove and reapply the label to request another review of the current head.
+The caller template reviews a non-draft pull request when it opens, becomes ready for review, or receives the `review-requested` label. A new push in a caller adopting this template does not request another review. Remove and reapply the label to request another review of the current head.
+
+Karkhana keeps automatic reviews on non-draft PR pushes and reopening, as well as the template's events. Ahmed chose this exception on 2026-10-30 because changes here reach every caller at `@main`.
 
 ```mermaid
 flowchart LR
-  Event[PR event] --> Caller[Caller event and label filter]
-  Caller --> Scope[Shared routine update check]
+  Event[Caller opened, ready, or requested] --> Filter[Non-draft and label filter]
+  Source[Karkhana also reviews pushes and reopening] --> Filter
+  Filter --> Scope[Shared routine update check]
   Scope --> Review[Claude review]
   Review --> Error[Error policy]
   Error -->|Usage limit| Fail[Fail without retry]

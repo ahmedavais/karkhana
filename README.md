@@ -87,6 +87,9 @@ jobs:
 Event selection lives in this caller file. Updating the reusable workflow does not change an existing caller's
 triggers; copy the event types and job condition above when adopting this schedule.
 
+Karkhana's own caller also reviews non-draft PRs on `synchronize` and `reopened`. A push here can change the shared
+checks every caller runs at `@main`, so this repository keeps automatic reviews of later commits.
+
 ## Duplication
 
 Fails when a change adds duplicated code: a pull request is compared with its base branch, a push with the commit

@@ -33,4 +33,4 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
-      - run: npx --yes --package renovate@44.133.0 renovate-config-validator --strict default.json renovate.json
+      - run: npx --yes --package renovate@44.166.0 renovate-config-validator --strict default.json renovate.json

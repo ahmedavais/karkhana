@@ -21,6 +21,6 @@ jobs:
           fi
         env:
           BASELINE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event.before }}
-      - run: npx --yes jscpd@5.4.0 . --baseline-from-ref "$BASELINE" --fail-on-new-clones --reporters console
+      - run: npx --yes jscpd@5.4.1 . --baseline-from-ref "$BASELINE" --fail-on-new-clones --reporters console
         env:
           BASELINE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event.before }}

@@ -139,9 +139,12 @@ that module does more than one thing. Every other function in a test file, `it` 
 limit. ESLint has no option for this, so `eslint/lengths-in-test-files.js` wraps its own `max-lines-per-function` as
 two rules, `karkhana/max-lines-per-function` and `karkhana/max-lines-per-describe`.
 
-A project installs karkhana straight from GitHub and spreads the limits into its `eslint.config.js`:
+A project installs karkhana straight from GitHub and spreads the limits into its `eslint.config.js`. npm 12 refuses
+git dependencies unless the project allows the ones in its own `package.json`, so the project first adds
+`allow-git=root` to its `.npmrc`; without it, `npm install` and Renovate's lock file refresh fail with `EALLOWGIT`:
 
 ```sh
+echo 'allow-git=root' >> .npmrc
 npm install --save-dev github:ahmedavais/karkhana
 ```
 

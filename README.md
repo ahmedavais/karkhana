@@ -39,6 +39,15 @@ jobs:
     uses: ahmedavais/karkhana/.github/workflows/watch-production.yml@main
 ```
 
+A project with more than one kind of alarm can split its checks into separate workflows, so the email's subject says
+which kind failed. Each one names its npm script, and the workflow's `name` becomes the subject:
+
+```yaml
+    uses: ahmedavais/karkhana/.github/workflows/watch-production.yml@main
+    with:
+      script: watch-catalog
+```
+
 ## Adversarial review
 
 Claude Code reviews a non-draft pull request from the project's own branches when it opens, becomes ready for

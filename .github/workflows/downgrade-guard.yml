@@ -1,0 +1,27 @@
+name: Downgrade guard
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  lowered-dependencies:
+    if: github.event.pull_request.user.login == 'renovate[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v7
+        with:
+          repository: ahmedavais/karkhana
+          ref: main
+          path: .karkhana
+      - env:
+          BASE_REF: origin/${{ github.base_ref }}
+        run: |
+          CHANGED_FILES="$(git -c core.quotePath=false diff --name-only "$BASE_REF" HEAD)"
+          export CHANGED_FILES
+          node .karkhana/updates/downgrade-guard-cli.js

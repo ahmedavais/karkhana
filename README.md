@@ -238,7 +238,7 @@ guard, that refresh is red and comes to Ahmed through the failed update alarm in
 For every `package-lock.json` the pull request changes, it compares the version locked for each dependency the root
 package names (`dependencies`, `devDependencies`, `optionalDependencies`, `peerDependencies`) with the base branch's.
 Transitive dependencies and git dependencies, which lock a commit rather than a version, aren't compared, and neither
-are Python lock files. A lock file the base branch lacks, or that the pull request deletes, passes. With no base branch
+are Python lock files. A lock file the base branch lacks, or that the pull request deletes or moves, passes. With no base branch
 to compare with, it fails. Pull requests that people open are skipped: someone lowering a version means to.
 
 The script is `updates/downgrade-guard-cli.js`, read from karkhana's main like the review brief. An npm project calls

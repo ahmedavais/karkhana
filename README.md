@@ -226,6 +226,9 @@ jobs:
 
 `needs` lists every other job in the workflow.
 
+Renovate reads the preset from karkhana's main, so a policy change reaches every project at once. The
+`validate-renovate` job checks the preset on every pull request.
+
 ### Downgrade guard
 
 Fails a Renovate pull request that moves a direct dependency to an older locked version, with an error naming the
@@ -246,9 +249,6 @@ jobs:
   downgrade-guard:
     uses: ahmedavais/karkhana/.github/workflows/downgrade-guard.yml@main
 ```
-
-Renovate reads the preset from karkhana's main, so a policy change reaches every project at once. The
-`validate-renovate` job checks the preset on every pull request.
 
 ## Following main
 

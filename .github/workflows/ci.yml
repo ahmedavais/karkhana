@@ -26,6 +26,9 @@ jobs:
       - run: npm ci
       - run: npm test
 
+  downgrade-guard:
+    uses: ./.github/workflows/downgrade-guard.yml
+
   validate-renovate:
     runs-on: ubuntu-latest
     steps:

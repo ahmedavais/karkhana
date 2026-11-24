@@ -37,7 +37,11 @@ test('a direct dependency locked to a newer version is not reported', () => {
 });
 
 test('dev, optional and peer dependencies count as direct', () => {
-  const root = { devDependencies: { vitest: '*' }, optionalDependencies: { sharp: '*' }, peerDependencies: { eslint: '*' } };
+  const root = {
+    devDependencies: { vitest: '*' },
+    optionalDependencies: { sharp: '*' },
+    peerDependencies: { eslint: '*' },
+  };
   const withVersions = (version) => ({
     packages: {
       '': root,
@@ -72,7 +76,8 @@ test('a transitive dependency locked to an older version is not reported', () =>
 });
 
 test('a git dependency, which locks a commit instead of a version, is not reported', () => {
-  const base = { packages: { '': { devDependencies: { karkhana: 'github:ahmedavais/karkhana' } }, 'node_modules/karkhana': {} } };
+  const root = { devDependencies: { karkhana: 'github:ahmedavais/karkhana' } };
+  const base = { packages: { '': root, 'node_modules/karkhana': {} } };
 
   const lowered = loweredDependencies(base, base);
 

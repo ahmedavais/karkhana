@@ -17,10 +17,11 @@
 - [x] Write `updates/downgrade-guard-cli.js` test-first against a real temporary git repository: compare each changed
   `package-lock.json` with the base branch, print an error per lowered dependency, and fail. Result: 5 tests, including
   a missing base branch failing rather than passing unchecked
-- [ ] Add `.github/workflows/downgrade-guard.yml`, document it in `README.md` and `AGENTS.md`. Verify: the CLI fails
+- [x] Add `.github/workflows/downgrade-guard.yml`, document it in `README.md` and `AGENTS.md`. Verify: the CLI fails
   on the real lock file refresh that undid a security fix, naming the dependency and both versions, and passes the
-  security fix that followed it; `lint-workflows` passes; the PR's checks and review pass; merged. Result so far: on
-  2026-11-24 the CLI failed the refresh with `astro moved from 7.4.7 to 7.4.4` and passed the following fix
+  security fix that followed it; `lint-workflows` passes; the PR's checks and review pass; merged. Result: on 2026-11-24
+  the CLI failed the refresh with `astro moved from 7.4.7 to 7.4.4` and passed the following fix; #52 passed every
+  check after fixing three review findings, and merged
 
 ## Projects call the guard
 

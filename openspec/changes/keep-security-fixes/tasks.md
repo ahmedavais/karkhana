@@ -2,9 +2,10 @@
 
 ## Security fixes raise the range
 
-- [ ] Set `rangeStrategy: "bump"` in `default.json`'s `vulnerabilityAlerts`. Correct the README's claim that a lock
+- [x] Set `rangeStrategy: "bump"` in `default.json`'s `vulnerabilityAlerts`. Correct the README's claim that a lock
   file refresh carries versions of every age. Verify: `validate-renovate` passes; the PR's checks and review pass;
-  merged
+  merged. Result: a planted `"bumpp"` failed the validator; #51 passed every check with no review findings and merged
+  on 2026-11-24
 - [ ] Watch the first security fix for a direct dependency after the merge. Verify: it raises the manifest's range to
   the fixed version, and the next lock file refresh keeps the dependency at or above it. Record what Renovate does if
   that refresh fails with `notarget`

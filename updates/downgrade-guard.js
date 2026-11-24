@@ -1,21 +1,18 @@
+import { compareVersions } from './version-order.js';
+
+const DIRECT_DEPENDENCY_KINDS = ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies'];
+
+function directDependencies(lock) {
+  const root = lock.packages[''];
+  return DIRECT_DEPENDENCY_KINDS.flatMap((kind) => Object.keys(root[kind] ?? {}));
+}
+
 function lockedVersion(lock, name) {
   return lock.packages[`node_modules/${name}`]?.version;
 }
 
-function releaseParts(version) {
-  return version.split('.').map(Number);
-}
-
-function isOlder(version, than) {
-  const parts = releaseParts(version);
-  const thanParts = releaseParts(than);
-  const differing = parts.findIndex((part, index) => part !== thanParts[index]);
-  return differing !== -1 && parts[differing] < thanParts[differing];
-}
-
 export function loweredDependencies(baseLock, headLock) {
-  const names = Object.keys(headLock.packages[''].dependencies);
-  return names
+  return directDependencies(headLock)
     .map((name) => ({ name, from: lockedVersion(baseLock, name), to: lockedVersion(headLock, name) }))
-    .filter(({ from, to }) => isOlder(to, from));
+    .filter(({ from, to }) => from && to && compareVersions(to, from) < 0);
 }

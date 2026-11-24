@@ -108,6 +108,22 @@ test('prereleases of one release compare by their numbered parts', () => {
   assert.deepEqual(lowered, [{ name: 'astro', from: '8.0.0-beta.10', to: '8.0.0-beta.2' }]);
 });
 
+test('a numbered prerelease part is older than a named one, whatever their text order', () => {
+  const base = lock({ astro: '8.0.0-10a' });
+
+  const lowered = loweredDependencies(base, lock({ astro: '8.0.0-2' }));
+
+  assert.deepEqual(lowered, [{ name: 'astro', from: '8.0.0-10a', to: '8.0.0-2' }]);
+});
+
+test('a prerelease that extends another is newer', () => {
+  const base = lock({ astro: '8.0.0-beta' });
+
+  const lowered = loweredDependencies(base, lock({ astro: '8.0.0-beta.1' }));
+
+  assert.deepEqual(lowered, []);
+});
+
 test('a prerelease with fewer parts is older than one that extends it', () => {
   const base = lock({ astro: '8.0.0-beta.1' });
 

@@ -12,7 +12,7 @@
 ## Downgrade guard
 
 - [x] Write `updates/downgrade-guard.js` test-first: which direct dependencies a new lock file moves to an older
-  version. Result: 11 tests, with version order in `updates/version-order.js`
+  version. Result: 13 tests, with version order in `updates/version-order.js`
 - [x] Write `updates/downgrade-guard-cli.js` test-first against a real temporary git repository: compare each changed
   `package-lock.json` with the base branch, print an error per lowered dependency, and fail. Result: 5 tests, including
   a missing base branch failing rather than passing unchecked

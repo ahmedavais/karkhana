@@ -1,13 +1,17 @@
 const NUMBER = /^\d+$/;
 
 function compareIdentifiers(identifier, other) {
-  if (NUMBER.test(identifier) && NUMBER.test(other)) return Math.sign(Number(identifier) - Number(other));
+  const isNumber = NUMBER.test(identifier);
+  const otherIsNumber = NUMBER.test(other);
+  if (isNumber && otherIsNumber) return Math.sign(Number(identifier) - Number(other));
+  if (isNumber !== otherIsNumber) return isNumber ? -1 : 1;
   if (identifier === other) return 0;
   return identifier < other ? -1 : 1;
 }
 
 function compareIdentifierLists(identifiers, others) {
-  const differing = identifiers.findIndex((identifier, index) => compareIdentifiers(identifier, others[index]) !== 0);
+  const shared = identifiers.slice(0, others.length);
+  const differing = shared.findIndex((identifier, index) => compareIdentifiers(identifier, others[index]) !== 0);
   if (differing === -1) return Math.sign(identifiers.length - others.length);
   return compareIdentifiers(identifiers[differing], others[differing]);
 }

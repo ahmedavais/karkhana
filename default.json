@@ -29,6 +29,7 @@
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
     "minimumReleaseAge": null,
+    "rangeStrategy": "bump",
     "commitMessagePrefix": "fix:"
   },
   "packageRules": [

@@ -187,10 +187,12 @@ commits the lock file. `npm update karkhana` leaves a git dependency's pin where
 update:
 
 - Patch and minor updates arrive as one pull request on Mondays, which merges itself once every check on it passes
-- A lock file refresh arrives as a second pull request, assigned to Ahmed to merge once its checks pass: it carries
-  versions of every age, since the 14-day wait can't date a refresh
+- A lock file refresh arrives as a second pull request, assigned to Ahmed to merge once its checks pass. Renovate
+  can't date a refresh, so it doesn't wait 14 days itself, but the refreshes seen so far resolved only releases at
+  least 14 days old
 - A release is taken only once it is 14 days old. A fix for a known vulnerability in a direct dependency skips the
-  wait and the schedule, in a pull request of its own; transitive fixes arrive with Monday's lock file refresh
+  wait and the schedule, in a pull request of its own, and raises the manifest's range to the fixed version, so a
+  later refresh can't resolve below it; transitive fixes arrive with Monday's lock file refresh
 - A major release, or an update whose checks fail, stays open and is assigned to Ahmed, so GitHub notifies him.
   Nothing else asks for attention, and no issue lists pending updates
 - Tool versions pinned inside workflow commands (`npx --yes <tool>@<version>`, `docker run <image>:<version>`) are

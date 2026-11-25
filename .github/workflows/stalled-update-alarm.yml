@@ -1,0 +1,33 @@
+name: Stalled update alarm
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  assign-owner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          repository: ahmedavais/karkhana
+          ref: main
+          path: .karkhana
+      - shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          gh pr list --repo "$REPOSITORY" --state open --limit 100 \
+            --json number,createdAt,author,assignees,statusCheckRollup > pull-requests.json
+          node .karkhana/updates/stalled-update-cli.js pull-requests.json > stalled.json
+          jq -c '.[]' stalled.json | while read -r update; do
+            number="$(jq -r .number <<< "$update")"
+            gh pr edit "$number" --repo "$REPOSITORY" --add-assignee "$OWNER"
+            jq -r .comment <<< "$update" | gh pr comment "$number" --repo "$REPOSITORY" --body-file -
+          done
+          echo "$(jq length stalled.json) stalled update(s) assigned to $OWNER"

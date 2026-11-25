@@ -193,8 +193,9 @@ update:
 - A release is taken only once it is 14 days old. A fix for a known vulnerability in a direct dependency skips the
   wait and the schedule, in a pull request of its own, and raises the manifest's range to the fixed version, so a
   later refresh can't resolve below it; transitive fixes arrive with Monday's lock file refresh
-- A major release, or an update whose checks fail, stays open and is assigned to Ahmed, so GitHub notifies him.
-  Nothing else asks for attention, and no issue lists pending updates
+- A major release, or an update whose checks fail, stays open and is assigned to Ahmed, so GitHub notifies him. So is
+  an update still open and unassigned three days after it opened. Nothing else asks for attention, and no issue lists
+  pending updates
 - Tool versions pinned inside workflow commands (`npx --yes <tool>@<version>`, `docker run <image>:<version>`) are
   proposed in a pull request of their own that never merges itself: every project runs these workflows at `@main`
 - Commits start with `ci:`, or `fix:` for a security fix
@@ -225,6 +226,35 @@ jobs:
 ```
 
 `needs` lists every other job in the workflow.
+
+### Stalled update alarm
+
+An update that never fails can still stall: Renovate merges only once every check on it has passed, been skipped or
+come back neutral, so one cancelled or stuck check leaves it open, unassigned, and nobody hears. Each update meant to
+wait for Ahmed is assigned to him when it opens, so an unassigned Renovate pull request still open three days later
+has stalled. Once a day, the stalled update alarm assigns each one to the repository owner and comments with the
+checks that haven't passed. An assigned pull request is skipped, so each stall comes to Ahmed once.
+
+The script is `updates/stalled-update-cli.js`, read from karkhana's main. The project adds a scheduled caller:
+
+```yaml
+name: Watch stalled updates
+
+on:
+  schedule:
+    - cron: "17 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stalled-update-alarm:
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: ahmedavais/karkhana/.github/workflows/stalled-update-alarm.yml@main
+```
 
 Renovate reads the preset from karkhana's main, so a policy change reaches every project at once. The
 `validate-renovate` job checks the preset on every pull request.

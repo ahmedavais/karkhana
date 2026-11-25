@@ -10,7 +10,11 @@
 ## npm lock file refreshes merge themselves
 
 - [x] Set `minimumReleaseAgePackageManagerSync: true` and add the `packageRules` entry that merges `npm` lock file
-  refreshes. Update the README. Verify: `validate-renovate` passes at 44.236.0. Result: passed on 2026-11-25
+  refreshes. Update the README. Verify: `validate-renovate` passes at 44.236.0; a dry run with the branch's preset
+  merges the npm refresh and holds the uv one. Result: on 2026-11-25 the validator passed at 44.236.0 and 44.257.3. A
+  read-only `--dry-run=full` of Renovate 44.257.3 on agile-7.com logged that npm enforces the minimum release age,
+  set `automerge=true` on the refresh and passed npm `--before=2026-11-11`; on buzzword-weather it marked the uv
+  refresh pending for lack of a release timestamp, with no automerge
 - [ ] Merge once 44.236.0 is 14 days old, after 2026-11-26 13:43 UTC. Verify: the pull request's checks and review pass
 - [ ] Watch the first Monday after the merge. Verify: in each npm project, the refresh's `renovate/stability-days`
   passes, the refresh merges itself, and its lock file holds no version younger than 14 days at the refresh;

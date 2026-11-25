@@ -24,6 +24,9 @@ Shared GitHub workflows for Ahmed's projects. See `README.md` for what each one 
 - `updates/downgrade-guard.js` decides which direct dependencies a Renovate pull request moves to an older locked
   version, and `updates/version-order.js` orders versions the way semver does, so the guard needs no `npm ci`. The
   downgrade guard workflow runs the CLI from karkhana's main checkout, so a change reaches callers only once merged
+- `updates/stalled-update.js` decides which Renovate pull requests have stalled: open more than three days with
+  nobody assigned. The stalled update alarm workflow runs its CLI from karkhana's main checkout, on a daily schedule
+  in each project, so like the downgrade guard a change reaches callers only once merged
 - `default.json` is the Renovate preset every project follows from main, like the workflows. `validate-renovate` checks
   it; a broken preset would stop updates in every project at once
 - `.github/workflows/ci.yml` lints every workflow with actionlint and runs `npm test`. Prove a new check by planting a

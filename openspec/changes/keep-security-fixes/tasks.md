@@ -25,8 +25,14 @@
 
 ## Projects call the guard
 
-- [ ] In each npm project that follows the update policy, add the guard as a CI job and to the failed update alarm's
-  `needs`, one PR each. Verify: each PR's checks and review pass; merged
-- [ ] Prove the guard end to end: the job runs only on pull requests Renovate opened, so plant a commit lowering a
+- [x] In each npm project that follows the update policy, add the guard as a CI job and to the failed update alarm's
+  `needs`, one PR each. Verify: each PR's checks and review pass; merged. Result: agile-7.com #111,
+  ahmedavais.com #164 and streamdeck-ahmed-toolkit #25 passed their checks and review and merged on 2026-11-24, the
+  guard skipping as designed on a pull request a person opened. buzzword-weather follows the policy but locks with
+  `uv.lock`, which the guard doesn't read, so it has no guard job
+- [x] Prove the guard end to end: the job runs only on pull requests Renovate opened, so plant a commit lowering a
   direct dependency on an open Renovate pull request in a calling project. Verify: the guard fails naming the
-  dependency and both versions, and the alarm assigns Ahmed; then drop the planted commit
+  dependency and both versions, and the alarm assigns Ahmed; then drop the planted commit. Result: on 2026-11-25 a
+  commit locking astro at 7.4.5 on ahmedavais.com #163 failed the guard with `astro moved from 7.4.7 to 7.4.5`, while
+  verify and preview passed. Renovate assigns Ahmed to every pull request, so he was unassigned first; the alarm
+  assigned him back. The branch was then reset to Renovate's own commit

@@ -34,5 +34,5 @@
   direct dependency on an open Renovate pull request in a calling project. Verify: the guard fails naming the
   dependency and both versions, and the alarm assigns Ahmed; then drop the planted commit. Result: on 2026-11-25 a
   commit locking astro at 7.4.5 on ahmedavais.com #163 failed the guard with `astro moved from 7.4.7 to 7.4.5`, while
-  verify and preview passed. Renovate assigns Ahmed to every pull request, so he was unassigned first; the alarm
+  verify and preview passed. Renovate had assigned Ahmed, as it does every pull request that won't merge itself, so he was unassigned first; the alarm
   assigned him back. The branch was then reset to Renovate's own commit

@@ -187,9 +187,10 @@ commits the lock file. `npm update karkhana` leaves a git dependency's pin where
 update:
 
 - Patch and minor updates arrive as one pull request on Mondays, which merges itself once every check on it passes
-- A lock file refresh arrives as a second pull request, assigned to Ahmed to merge once its checks pass. Renovate
-  can't date a refresh, so it doesn't wait 14 days itself, but the refreshes seen so far resolved only releases at
-  least 14 days old
+- A lock file refresh arrives as a second pull request. Renovate can't date a refresh, so for npm it passes `--before`
+  set to 14 days ago, npm resolves only releases that old, and the refresh merges itself once every check passes
+  (`minimumReleaseAgePackageManagerSync`). Renovate can't hold a uv refresh to 14 days, so that one is assigned to
+  Ahmed to merge
 - A release is taken only once it is 14 days old. A fix for a known vulnerability in a direct dependency skips the
   wait and the schedule, in a pull request of its own, and raises the manifest's range to the fixed version, so a
   later refresh can't resolve below it; transitive fixes arrive with Monday's lock file refresh

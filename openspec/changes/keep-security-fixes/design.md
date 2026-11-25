@@ -57,6 +57,7 @@ a checkout with no `npm ci`, and karkhana ships no runtime dependencies to the p
 ## Risks / Trade-offs
 
 - With the range raised, a refresh in the fix's first 14 days may find no release old enough inside the range. npm
-  then fails with `notarget` and writes no lock file. What Renovate does with that failure is unknown, so the first
-  security fix after this change is watched. Transitive fixes wait during that window
+  then fails with `notarget` and writes no lock file. Renovate's docs say it then retries without `--before`, so that
+  refresh takes transitive releases of any age. `unattended-lock-refresh` adds a check for that. The first security
+  fix after this change is still watched
 - The check trusts the base branch's lock file. A downgrade that already reached main isn't reported again

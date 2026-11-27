@@ -8,8 +8,11 @@
     "on monday"
   ],
   "minimumReleaseAge": "14 days",
+  "minimumReleaseAgePackageManagerSync": true,
   "internalChecksFilter": "strict",
-  "dependencyDashboard": false,
+  "dependencyDashboard": {
+    "enabled": false
+  },
   "prHourlyLimit": 0,
   "assignees": [
     "ahmedavais"
@@ -45,6 +48,18 @@
         "major"
       ],
       "automerge": false
+    },
+    {
+      "description": [
+        "npm enforces the 14 days on a refresh, through the --before that Renovate passes it"
+      ],
+      "matchUpdateTypes": [
+        "lockFileMaintenance"
+      ],
+      "matchManagers": [
+        "npm"
+      ],
+      "automerge": true
     },
     {
       "matchManagers": [

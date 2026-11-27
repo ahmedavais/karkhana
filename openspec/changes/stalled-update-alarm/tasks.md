@@ -11,16 +11,21 @@
 
 ## The alarm runs in karkhana
 
-- [ ] Add `.github/workflows/stalled-update-alarm.yml` and a daily caller in karkhana, and document both in
+- [x] Add `.github/workflows/stalled-update-alarm.yml` and a daily caller in karkhana, and document both in
   `README.md` and `AGENTS.md`. Verify: `lint-workflows` and `test` pass; the pull request's review passes; merged
-  after Ahmed's approval
-- [ ] Prove it with a planted stall once merged, since the workflow reads the script from main: unassign karkhana's
+  after Ahmed's approval. Result: #56 passed every check with no review findings and merged
+  on 2026-11-25; a manual run on main found 0 stalled updates, and the first scheduled run on 2026-11-26 passed
+- [x] Prove it with a planted stall once merged, since the workflow reads the script from main: unassign karkhana's
   workflow tools update #48 once it has been open more than three days (after 2026-11-26 13:09 UTC) and run
   `Watch stalled updates` by hand. Verify: the run assigns it to Ahmed and comments with its checks; a second run
-  changes nothing
+  changes nothing. Result: on 2026-11-27 run 46015851754 logged one stalled update, assigned Ahmed back and
+  commented that #48 had been open 4 days, naming `validate-renovate: FAILURE`; run 46015910294 logged none and
+  added no comment
 
 ## Each project picks it up
 
-- [ ] Add the caller to agile-7.com, ahmedavais.com, buzzword-weather and streamdeck-ahmed-toolkit, one pull request
+- [x] Add the caller to agile-7.com, ahmedavais.com, buzzword-weather and streamdeck-ahmed-toolkit, one pull request
   each. Verify: each pull request's checks and review pass; merged after Ahmed's approval; a manual run in each
-  succeeds
+  succeeds. Result: agile-7.com#112, ahmedavais.com#167, buzzword-weather#35 and
+  streamdeck-ahmed-toolkit#26 passed every check with no review findings and merged on 2026-11-27; a manual run in
+  each found 0 stalled updates
